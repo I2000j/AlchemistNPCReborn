@@ -1,0 +1,17 @@
+Hey! This is reborn of 1.3 Alchemist NPC. I'm bad modder, so report bugs!
+If you want to help, write to me: SecretYT#0497
+ATTENTION!!! For some reason, the mod may not work well in multiplayer!
+
+Original mod by @Gregg, used open source code. Ported by @SecretYT
+
+AlchemistNPC Discord: https://discord.gg/WGKyKun
+
+Frequent questions:
+	___ ported? - Read "Already ported"
+	___ doesn't work for me! - Write to the discussion "Mod Bugs"
+	When will ___ be added? - I add a little bit of everything.
+
+Already Ported:
+	All except some items
+
+For other info you can join my discord server: https://discord.gg/ssPQfAVXkD
