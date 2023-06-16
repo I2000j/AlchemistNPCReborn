@@ -7,7 +7,6 @@ Original mod by @Gregg, used open source code. Ported by @SecretYT
 AlchemistNPC Discord: https://discord.gg/WGKyKun
 
 Frequent questions:
-	___ ported? - Read "Already ported"
 	___ doesn't work for me! - Write to the discussion "Mod Bugs"
 	When will ___ be added? - I add a little bit of everything.
 

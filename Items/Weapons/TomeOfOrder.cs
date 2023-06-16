@@ -134,14 +134,14 @@ namespace AlchemistNPCReborn.Items.Weapons
 			return true;
 		}
 		
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(4));
-			Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
-			float speedX = perturbedSpeed.X;
-			float speedY = perturbedSpeed.Y;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, speedX, speedY, Mod.Find<ModProjectile>("Bolt").Type, damage, Item.knockBack, player.whoAmI);
-			return false;
-		}
+		//public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		//{
+		//	Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(4));
+		//	Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
+		//	float speedX = perturbedSpeed.X;
+		//	float speedY = perturbedSpeed.Y;
+		//	Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, speedX, speedY, Mod.Find<ModProjectile>("Bolt").Type, damage, Item.knockBack, player.whoAmI);
+		//	return false;
+		//}
 	}
 }

@@ -1,6 +1,6 @@
 displayName = Alchemist NPC Reborn PRERELEASE
 author = SecretYT, Gregg
-version = 0.6.6
+version = 0.6.7
 weakReferences = Census, CalamityMod, CalamityModMusic, ThoriumMod, FargowiltasSouls, Fargowiltas
 buildIgnore = *.user, obj\*, bin\*, .vs\*, .git*, referenceImages*.png, .gitattributes, *.csproj
 includeSource = true

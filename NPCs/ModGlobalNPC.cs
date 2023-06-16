@@ -899,7 +899,7 @@ namespace AlchemistNPCReborn.NPCs
 			}
 			if (npc.type == NPCID.Creeper && AlchemistNPCReborn.modConfiguration.TornNotesDrop)
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Notes.TornNote2>(), 1));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Notes.TornNote2Piece>(), 1));
 			}
 			if (npc.type == NPCID.EaterofWorldsBody && AlchemistNPCReborn.modConfiguration.TornNotesDrop)
 			{

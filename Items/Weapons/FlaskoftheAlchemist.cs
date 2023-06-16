@@ -41,7 +41,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.value = 1000000;
 			Item.rare = 9;
 			Item.UseSound = SoundID.Item106;
-			Item.shoot = Mod.Find<ModProjectile>("FA1").Type;
+			Item.shoot = Project(Mod.Find<ModProjectile>("FA1").Type);
 			Item.autoReuse = true;
 			Item.shootSpeed = 16f;
 			Item.noUseGraphic = true;
@@ -109,7 +109,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			{
 				Item.damage = 111;
 			}
-			Mod Calamity = ModLoader.GetMod("CalamityMod");
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
 			if(Calamity != null)
 			{
 				if ((bool)Calamity.Call("Downed", "profaned guardians"))
@@ -145,28 +145,34 @@ namespace AlchemistNPCReborn.Items.Weapons
 		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
+			Item.shoot = Project(Mod.Find<ModProjectile>("FA1").Type);
+			return true;
+		}
+
+		public int Project(int type)
+		{
 			switch (Main.rand.Next(4))
 			{
 				case 0:
 				type = Mod.Find<ModProjectile>("FA1").Type;
-				damage /= 2;
+				//damage /= 2;
 				break;
 
 				case 1:
 				type = Mod.Find<ModProjectile>("FA2").Type;
-				damage /= 2;
+				//damage /= 2;
 				break;
 				
 				case 2:
 				type = Mod.Find<ModProjectile>("FA3").Type;
-				damage /= 2;
+				//damage /= 2;
 				break;
 				
 				case 3:
 				type = Mod.Find<ModProjectile>("FA4").Type;
 				break;
 			}
-			return true;
+			return type;
 		}
 		
 	}
