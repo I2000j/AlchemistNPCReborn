@@ -5,6 +5,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Localization;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace AlchemistNPCReborn.Items.Weapons
 {
@@ -52,7 +59,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddIngredient(ItemID.SoulofLight, 20);
 			recipe.AddIngredient(ItemID.SoulofNight, 20);
 			recipe.AddIngredient(ItemID.HallowedRepeater);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 		}
 

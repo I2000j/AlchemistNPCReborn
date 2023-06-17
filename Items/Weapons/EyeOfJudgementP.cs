@@ -43,7 +43,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.maxStack = 1;
 			Item.value = 1000000;
 			Item.holdStyle = 1;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.scale = 1f;
 			Item.knockBack = 4;
 			Item.shoot = Mod.Find<ModProjectile>("SharpBone").Type;

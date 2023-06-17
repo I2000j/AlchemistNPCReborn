@@ -42,7 +42,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.noUseGraphic = true;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.knockBack = 8;
 			Item.shoot = Mod.Find<ModProjectile>("PF422").Type;
 		}

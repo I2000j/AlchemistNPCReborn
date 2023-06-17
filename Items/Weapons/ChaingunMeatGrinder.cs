@@ -42,7 +42,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.useAnimation = 10;
 			Item.noMelee = true;
 			Item.value = 1000000;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.autoReuse = true;
 			Item.shoot = 638;
 			Item.useAmmo = Mod.Find<ModItem>("MGB").Type;

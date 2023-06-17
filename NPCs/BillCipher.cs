@@ -189,8 +189,8 @@ namespace AlchemistNPCReborn.NPCs
 				{
 				Main.NewText(Language.GetTextValue("Mods.AlchemistNPCReborn.BillCipherChat1"), 10, 255, 10);
 				Main.NewText(Language.GetTextValue("Mods.AlchemistNPCReborn.BillCipherChat2"), 10, 255, 10);
-				//player.QuickSpawnItem(ModContent.ItemType<Items.BillCipherBag>());
-				}
+				var source = NPC.GetSource_FromAI();
+				Item.NewItem(source,(int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, ModContent.ItemType<Items.Misc.BillCipherBag>());
 				NPC.boss = false;
 				NPC.velocity = new Vector2(0, -10);
 				NPC.velocity *= 3f;
@@ -209,9 +209,9 @@ namespace AlchemistNPCReborn.NPCs
 					break;
 				}
 			}
-			//NPC.buffImmune[ModContent.BuffType<ArmorDestruction>()] = true;
+			NPC.buffImmune[ModContent.BuffType<Buffs.ArmorDestruction>()] = true;
 			NPC.buffImmune[ModContent.BuffType<Buffs.Twilight>()] = true;
-			//NPC.buffImmune[ModContent.BuffType<Electrocute>()] = true;
+			NPC.buffImmune[ModContent.BuffType<Buffs.Electrocute>()] = true;
 			NPC.buffImmune[ModContent.BuffType<Buffs.Patience>()] = true;
 			NPC.buffImmune[39] = true;
 			NPC.buffImmune[69] = true;
@@ -229,8 +229,6 @@ namespace AlchemistNPCReborn.NPCs
                     NPC.buffImmune[ThoriumModbuff2.Type] = true;
 			}
 			}
-
-			if (calamityLoaded){
 
 			if (ModLoader.GetMod("CalamityMod") != null)
 			{
@@ -522,24 +520,24 @@ namespace AlchemistNPCReborn.NPCs
 			//}
 		}
 		
-		public override void ModifyNPCLoot(NPCLoot NPCLoot)
-		{
-			
-			var source = NPC.GetSource_FromAI();
-			if (Main.expertMode)
-			{
-				Item.NewItem(source,(int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, ModContent.ItemType<Items.Misc.BillCipherBag>());
-			}
-			else
-			{
-				Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("GoldenKnuckles").Type);
-				Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("WrathOfTheCelestial").Type);
-				Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("LaserCannon").Type);
-				//Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("GrapplingHookGunItem").Type);
-				Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("BillSoul").Type);
-				Item.NewItem(source,(int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height,ItemID.PlatinumCoin, 25);
-			}
-		}
+		//public override void ModifyNPCLoot(NPCLoot NPCLoot)
+		//{
+		//	
+		//	var source = NPC.GetSource_FromAI();
+		//	if (Main.expertMode)
+		//	{
+		//		Item.NewItem(source,(int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, ModContent.ItemType<Items.Misc.BillCipherBag>());
+		//	}
+		//	else
+		//	{
+		//		Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("GoldenKnuckles").Type);
+		//		Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("WrathOfTheCelestial").Type);
+		//		Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("LaserCannon").Type);
+		//		//Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("GrapplingHookGunItem").Type);
+		//		Item.NewItem(source, (int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height, Mod.Find<ModItem>("BillSoul").Type);
+		//		Item.NewItem(source,(int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height,ItemID.PlatinumCoin, 25);
+		//	}
+		//}
 		
 		public override void BossLoot(ref string name, ref int potionType)
 		{

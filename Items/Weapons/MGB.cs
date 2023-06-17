@@ -28,7 +28,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.consumable = true;
 			Item.knockBack = 4;
 			Item.value = Item.sellPrice(0, 0, 1, 0);
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.shoot = 638;
 			Item.ammo = Item.type;
 		}

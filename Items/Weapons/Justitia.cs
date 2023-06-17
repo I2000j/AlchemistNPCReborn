@@ -8,6 +8,13 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ModLoader.IO;
 using Terraria.Localization;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace AlchemistNPCReborn.Items.Weapons
 {
@@ -36,7 +43,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.useStyle = 5;
 			Item.knockBack = 3;
 			Item.value = 1000000;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.noUseGraphic = true;
             Item.channel = true;
             Item.noMelee = true;
@@ -77,7 +84,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddIngredient(ItemID.LunarBar, 16);
 			recipe.AddIngredient(ItemID.FragmentNebula, 20);
             recipe.AddIngredient(ItemID.FragmentSolar, 20);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 		}
 	}

@@ -5,6 +5,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Localization;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace AlchemistNPCReborn.Items.Weapons
 {
@@ -77,7 +84,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddIngredient(ItemID.Cobweb, 25);
 			recipe.AddRecipeGroup("AlchemistNPCReborn:EvilComponent", 15);
 			recipe.AddRecipeGroup("AlchemistNPCReborn:EvilMush", 10);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 			recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.TheUndertaker);
@@ -85,7 +92,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddIngredient(ItemID.Cobweb, 25);
 			recipe.AddRecipeGroup("AlchemistNPCReborn:EvilComponent", 15);
 			recipe.AddRecipeGroup("AlchemistNPCReborn:EvilMush", 10);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 		}
 	}

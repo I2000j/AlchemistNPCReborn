@@ -5,6 +5,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Localization;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace AlchemistNPCReborn.Items.Weapons
 {
@@ -69,7 +76,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddIngredient(ItemID.Ectoplasm, 30);
 			recipe.AddIngredient(ItemID.ShroomiteBar, 15);
 			recipe.AddIngredient(ItemID.LunarBar, 15);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 		}
 	}

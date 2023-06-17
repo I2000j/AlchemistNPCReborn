@@ -95,6 +95,7 @@ namespace AlchemistNPCReborn
 {
     public class AlchemistNPCRebornPlayer : ModPlayer
     {
+        public int Shield = 0;
         public bool Barrage = false;
         public bool Blinker = false;
         public bool MasterYoyoBag = false;
@@ -141,6 +142,8 @@ namespace AlchemistNPCReborn
         public bool MysticAmuletMount = false;
         public bool GlobalTeleporter = false;
         public bool GlobalTeleporterUp = false;
+
+        public bool LaetitiaGift = false;
 		
 		public bool DriedFish = false;
         public bool SolarFish = false;
@@ -149,6 +152,9 @@ namespace AlchemistNPCReborn
         public bool StardustFish = false;
         public bool MiniShark = false;
         public bool Manna = false;
+
+        public bool SFU = false;
+        public bool SF = false;
 
         public bool LaetitiaSet = false;
 		
@@ -224,6 +230,9 @@ namespace AlchemistNPCReborn
         public int CultistBooster = 0;
         private const int maxMoonLordBooster = 1;
         public int MoonLordBooster = 0;
+
+        private const int maxLifeElixir = 2;
+        public int LifeElixir = 0;
 		
 		public bool GC = false;
 		public bool BeeHeal = false;
@@ -248,15 +257,23 @@ namespace AlchemistNPCReborn
         public int MeatGrinderUsetime = 0;
 
         public bool PGSWear = false;
+        public bool XtraT = false;
+        public bool AutoinjectorMK2 = false;
+        public bool Illuminati = false;
 
         public bool Yui = false;
         public bool YuiS = false;
+        public bool Scroll = false;
 		
         public override void ResetEffects()
         {
             if (AlchemistNPCRebornWorld.foundAntiBuffMode)
             {
                 Player.AddBuff(ModContent.BuffType<Buffs.AntiBuff>(), 2);
+            }
+            if (Shield < 0)
+            {
+                Shield = 0;
             }
             BoomBox = false;
             DistantPotionsUse = false;
@@ -276,6 +293,8 @@ namespace AlchemistNPCReborn
 
             LaetitiaSet = false;
 
+            AutoinjectorMK2 = false;
+
             Barrage = false;
             Blinker = false;
             MasterYoyoBag = false;
@@ -287,6 +306,11 @@ namespace AlchemistNPCReborn
             TerrarianBlock = false;
             TS = false;
             Symbiote = false;
+
+            SFU = false;
+            SF = false;
+            XtraT = false;
+
 
 			rainbowdust = false;
 
@@ -329,8 +353,15 @@ namespace AlchemistNPCReborn
             MiniShark = false;
             Manna = false;
 
+            LaetitiaGift = false;
+            Illuminati = false;
+
 			BeeHeal = false;
             PGSWear = false;
+            Scroll = false;
+            DeltaRune = false;
+
+            Player.statLifeMax2 += LifeElixir * 50;
 
             if (KeepBuffs == 1)
             {

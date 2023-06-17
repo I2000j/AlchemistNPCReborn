@@ -5,6 +5,14 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Localization;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+using AlchemistNPCReborn.Tiles;
 
 namespace AlchemistNPCReborn.Items.Weapons
 {
@@ -48,15 +56,6 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.UseSound = SoundID.Item1;
 			Item.shoot = Mod.Find<ModProjectile>("Spore").Type;
 		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 25);
-			recipe.AddIngredient(ItemID.LunarTabletFragment, 25);
-			//recipe.AddTile(null, "WingOfTheWorld");
-			recipe.Register();
-		}
 		
 		public override bool CanUseItem(Player player)
 		{
@@ -69,6 +68,15 @@ namespace AlchemistNPCReborn.Items.Weapons
 					Item.damage = 55;
 					}
 			return player.ownedProjectileCounts[Item.shoot] < 1; 
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 25);
+			recipe.AddIngredient(ItemID.LunarTabletFragment, 25);
+			recipe.AddTile<Tiles.WingoftheWorld>();
+			recipe.Register();
 		}
 	}
 }

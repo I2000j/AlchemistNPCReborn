@@ -59,7 +59,8 @@ namespace AlchemistNPCReborn.Buffs
 		
 		public override void Update(Player player, ref int buffIndex)
 		{
-			if (ModLoader.GetMod("CalamityMod") != null)
+			ModLoader.TryGetMod("CalamityMod", out Mod CalamityMod);
+			if (CalamityMod != null)
 			{
 				if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.AkumuSphere>()] == 0)
 				{
@@ -70,7 +71,7 @@ namespace AlchemistNPCReborn.Buffs
 					}
 				}
 			}
-			if (ModLoader.GetMod("CalamityMod") == null)
+			if (CalamityMod == null)
 			{
 				if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.AkumuSphere>()] == 0)
 				{

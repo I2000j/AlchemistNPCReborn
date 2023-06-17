@@ -49,7 +49,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.useAnimation = 30;
 			Item.useStyle = 1;
 			Item.value = 10000000;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.knockBack = 8;
 			Item.autoReuse = true;
 			Item.UseSound = SoundID.Item1;

@@ -10,6 +10,13 @@ using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using AlchemistNPCReborn;
 using Terraria.WorldBuilding;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace AlchemistNPCReborn.Items.Weapons
 {
@@ -106,7 +113,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddIngredient(null, "TheBeak");
 			recipe.AddIngredient(ItemID.TerraBlade);
 			recipe.AddIngredient(null, "EmagledFragmentation", 200);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 		}
 	}

@@ -44,7 +44,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.noMelee = true; //so the item's animation doesn't do damage
 			Item.knockBack = 8;
 			Item.value = 1000000;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.autoReuse = true;
 			Item.shoot = 340;
 			Item.shootSpeed = 32f;

@@ -86,7 +86,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddRecipeGroup("AlchemistNPCReborn:Tier3Bar", 15);
 			recipe.AddIngredient(ItemID.SoulofLight, 10);
 			recipe.AddIngredient(ItemID.SoulofNight, 10);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile<Tiles.WingoftheWorld>();
 			recipe.Register();
 		}
 	}

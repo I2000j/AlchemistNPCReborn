@@ -7,6 +7,13 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Terraria.WorldBuilding;
@@ -100,7 +107,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			recipe.AddRecipeGroup("AlchemistNPCReborn:EvilBar", 5);
 			recipe.AddIngredient(ItemID.BorealWood, 25);
 			recipe.AddRecipeGroup("AlchemistNPCReborn:EvilComponent", 15);
-			//recipe.AddTile(null, "WingOfTheWorld");
+			recipe.AddTile(null, "WingoftheWorld");
 			recipe.Register();
 		}
 	}

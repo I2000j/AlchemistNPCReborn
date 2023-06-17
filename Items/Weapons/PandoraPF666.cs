@@ -42,7 +42,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.useAnimation = 40;
 			Item.noMelee = true;
 			Item.knockBack = 8;
-			Item.rare = 12;
+			Item.rare = -12;
 			Item.autoReuse = false;
 			Item.shootSpeed = 32f;
 			Item.shoot = Mod.Find<ModProjectile>("PF666").Type;
