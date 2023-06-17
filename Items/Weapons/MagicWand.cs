@@ -12,11 +12,9 @@ namespace AlchemistNPCReborn.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("Royal Magic Wand"
-			//+"\nShoots a laser beam that can eliminate everything on its way.");
-			+"\nEmits magical particles that illuminate the area"
-			+"\nWhen used next to an enemy, it can cause huge damage to enemy!");
+			+"\nShoots a laser beam that can eliminate everything on its way.");
 			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Волшебная Палочка");
-            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Королевская Волшебная Палочка\nИспускает магические частицы, которые освещают местность\nПри использовании рядом с врагом он может нанести колоссальный урон врагу!");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Королевская Волшебная Палочка\nИспускает лазерный луч, который способен уничтожить всё на своём пути.");
 
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "魔杖");
             Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "皇家魔杖\n发出神奇的粒子，照亮该地区，恢复你的健康。");
@@ -24,7 +22,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 
 		public override void SetDefaults()
 		{
-			Item.damage = 3500;
+			Item.damage = 135;
 			Item.DamageType = DamageClass.Magic;
 			Item.channel = true;                            //Channel so that you can held the weapon [Important]
 			Item.mana = 55;

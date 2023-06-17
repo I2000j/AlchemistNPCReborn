@@ -4,10 +4,17 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.Audio;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
+using Terraria.Enums;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.Enums;
 
 namespace AlchemistNPCReborn.Projectiles
@@ -38,121 +45,53 @@ namespace AlchemistNPCReborn.Projectiles
 			Projectile.tileCollide = false;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.hide = true;
-			Projectile.aiStyle = -1;
 		}
 
-		/*
-            Projectile.ai[0]++;
-            if(Projectile.ai[0] < 60f)
-            {
-                Projectile.velocity *= 1.01f;
-            } else
-            {
-                Projectile.velocity *= 1.05f;
-                if(Projectile.ai[0] >= 180)
-                {
-                    Projectile.Kill();
-                }
-            }
-
-            //float rotateSpeed = 0.35f * (float)Projectile.direction;
-            //Projectile.rotation += rotateSpeed;
-
-            Lighting.AddLight(Projectile.Center, 0.75f, 0.75f, 0.75f);
-
-            //if(Main.rand.NextBool(2))
-            //{
-            //    int numToSpawn = Main.rand.Next(3);
-            //    for(int i = 0; i < numToSpawn; i++)
-            //    {
-            //        //Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<TutorialDust>(), Projectile.velocity.X * 0.1f, Projectile.velocity.Y * 0.1f,
-            //        //    0, default(Color), 1f);
-            //    }
-            //}
-        }
-
-		//public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-		//public override bool PreDraw(ref Color lightColor)
-		//{
-		//	if (Charge == MAX_CHARGE)
-		//	{
-		//		Vector2 unit = Projectile.velocity;
-		//		DrawLaser(spriteBatch, Main.ProjectileTexture[Projectile.type], 
-		//			Main.player[Projectile.owner].Center, unit, 10, Projectile.damage, 
-		//			-1.57f, 1f, 1000f, Color.White, (int)MOVE_DISTANCE);
-		//	}
-		//	return false;
-
-		//}
-
-		// <summary>
-		/// The core function of drawing a laser
-		// </summary>
-		//public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDist = 2000f, Color color = default(Color), int transDist = 50)
-		//{
-		//	Vector2 origin = start;
-		//	float r = unit.ToRotation() + rotation;
-
-		//	#region Draw laser body
-		//	for (float i = transDist; i <= Distance; i += step)
-		//	{
-		//		Color c = Color.White;
-		//		origin = start + i * unit;
-		//		spriteBatch.Draw(texture, origin - Main.screenPosition,
-		//			new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, r,
-		//			new Vector2(28 / 2, 26 / 2), scale, 0, 0);
-		//	}
-		//	#endregion
-
-		//	#region Draw laser tail
-		//	spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
-		//		new Rectangle(0, 0, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
-		//	#endregion
-
-		//	#region Draw laser head
-		//	spriteBatch.Draw(texture, start + (Distance + step) * unit - Main.screenPosition,
-		//		new Rectangle(0, 52, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
-		//	#endregion
-		//}*/
-
-		public override void AI()
+		public override bool PreDraw(ref Color lightColor)
 		{
-			for (int i = 0; i < 200; i++)
-            {
-                NPC target = Main.npc[i];
- 
-                float shootToX = target.position.X + target.width * 0.5f - Projectile.Center.X;
-                float shootToY = target.position.Y + target.height * 0.5f - Projectile.Center.Y;
-                float distance = (float)Math.Sqrt(shootToX * shootToX + shootToY * shootToY);
-
-                if (distance < 500f && !target.friendly && target.active)
-                {
-                    if (Projectile.ai[0] > 60f) // Time in (60 = 1 second) 
-                    {
-                        distance = 1.6f / distance;
-
-                        shootToX *= distance * 3;
-                        shootToY *= distance * 3;
-						//if (Main.rand.Next(20) == 0)
-						//{
-                        //	Projectile.NewProjectile(((Entity) this.Projectile).GetSource_FromThis((string) null),Projectile.Center.X, Projectile.Center.Y, shootToX, shootToY, ModContent.ProjectileType<TP>(), (Projectile.damage/4)*3, 0, Main.myPlayer, 0f, 0f);
-						//}
-                        Projectile.ai[0] = 0f;
-                    }
-					if (distance > 2500f)
-                	{
-                    	Projectile.Kill();
-                	}
-                }
-            }
-			if (Main.rand.NextBool())
+			if (Charge == MAX_CHARGE)
 			{
-				Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 187, Projectile.velocity.X * 0.9f, Projectile.velocity.Y * 0.9f);
+				Vector2 unit = Projectile.velocity;
+				DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, 
+					Main.player[Projectile.owner].Center, unit, 10, Projectile.damage, 
+					-1.57f, 1f, 1000f, Color.White, (int)MOVE_DISTANCE);
 			}
+			return false;
+
 		}
 
 		/// <summary>
-		/// Change the way of collision check of the Projectile
+		/// The core function of drawing a laser
+		/// </summary>
+		public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDist = 2000f, Color color = default(Color), int transDist = 50)
+		{
+			Vector2 origin = start;
+			float r = unit.ToRotation() + rotation;
+
+			#region Draw laser body
+			for (float i = transDist; i <= Distance; i += step)
+			{
+				Color c = Color.White;
+				origin = start + i * unit;
+				Main.spriteBatch.Draw(texture, origin - Main.screenPosition,
+					new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, r,
+					new Vector2(28 / 2, 26 / 2), scale, 0, 0);
+			}
+			#endregion
+
+			#region Draw laser tail
+			Main.spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
+				new Rectangle(0, 0, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
+			#endregion
+
+			#region Draw laser head
+			Main.spriteBatch.Draw(texture, start + (Distance + step) * unit - Main.screenPosition,
+				new Rectangle(0, 52, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
+			#endregion
+		}
+
+		/// <summary>
+		/// Change the way of collision check of the projectile
 		/// </summary>
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
@@ -172,10 +111,6 @@ namespace AlchemistNPCReborn.Projectiles
 		public override void ModifyHitNPC (NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
 			damage *= 3;
-			if (target.friendly)
-			{
-			target.AddBuff(BuffID.Regeneration, 1);
-			}
 		}
 		
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
@@ -183,17 +118,16 @@ namespace AlchemistNPCReborn.Projectiles
 			target.immune[Projectile.owner] = 5;
 		}
 
-
 		/// <summary>
-		/// The AI of the Projectile
+		/// The AI of the projectile
 		/// </summary>
-		/*public override void AI()
+		public override void AI()
 		{
 
 			Vector2 mousePos = Main.MouseWorld;
 			Player player = Main.player[Projectile.owner];
 
-			#region Set Projectile position
+			#region Set projectile position
 			if (Projectile.owner == Main.myPlayer) // Multiplayer support
 			{
 				Vector2 diff = mousePos - player.Center;
@@ -214,7 +148,7 @@ namespace AlchemistNPCReborn.Projectiles
 			#endregion
 
 			#region Charging process
-			// Kill the Projectile if the player stops channeling
+			// Kill the projectile if the player stops channeling
 			if (!player.channel)
 			{
 				Projectile.Kill();
@@ -298,18 +232,18 @@ namespace AlchemistNPCReborn.Projectiles
 			//Add lights
 			//DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
 			//Utils.PlotTileLine(Projectile.Center, Projectile.Center + Projectile.velocity * (Distance - MOVE_DISTANCE), 26, new Utils.PerLinePoint(DelegateMethods.CastLight));
-		}*/
+		}
 
 		public override bool ShouldUpdatePosition()
 		{
 			return false;
 		}
 
-		public override void CutTiles()
-		{
-			//DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
-			//Vector2 unit = Projectile.velocity;
-			//Utils.PlotTileLine(Projectile.Center, Projectile.Center + unit * Distance, (Projectile.width + 16) * Projectile.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));
-		}
+		//public override void CutTiles()
+		//{
+		//	DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
+		//	Vector2 unit = Projectile.velocity;
+		//	Utils.PlotTileLine(Projectile.Center, Projectile.Center + unit * Distance, (Projectile.width + 16) * Projectile.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));
+		//}
 	}
 }
