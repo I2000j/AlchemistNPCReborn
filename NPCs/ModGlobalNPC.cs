@@ -1075,7 +1075,7 @@ namespace AlchemistNPCReborn.NPCs
 				{
 					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.TheSecretVR>(), 1));
 				}
-				//if (AlchemistNPC.modConfiguration.TinkererSpawn)
+				//if (AlchemistNPCReborn.modConfiguration.TinkererSpawn)
 				//{
 				//	Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PaperTube3"), 3);
 				//}

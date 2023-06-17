@@ -247,6 +247,8 @@ namespace AlchemistNPCReborn
         public int chargetime = 0;
         public int MeatGrinderUsetime = 0;
 
+        public bool PGSWear = false;
+
         public bool Yui = false;
         public bool YuiS = false;
 		
@@ -328,6 +330,7 @@ namespace AlchemistNPCReborn
             Manna = false;
 
 			BeeHeal = false;
+            PGSWear = false;
 
             if (KeepBuffs == 1)
             {
