@@ -25,7 +25,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			Item.damage = 135;
 			Item.DamageType = DamageClass.Magic;
 			Item.channel = true;                            //Channel so that you can held the weapon [Important]
-			Item.mana = 55;
+			Item.mana = 15;
 			Item.rare = 11;
 			Item.width = 30;
 			Item.height = 30;

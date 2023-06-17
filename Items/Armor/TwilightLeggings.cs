@@ -45,7 +45,7 @@ namespace AlchemistNPCReborn.Items.Armor
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(null, "JustitiaLeggings");
-			//recipe.AddIngredient(null, "BigBirdLamp");
+			recipe.AddIngredient(null, "BigBirdLamp");
 			recipe.AddIngredient(null, "EmagledFragmentation", 150);
 			recipe.AddTile(null, "WingoftheWorld");
 			recipe.Register();

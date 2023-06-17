@@ -27,7 +27,7 @@ namespace AlchemistNPCReborn.Items.Misc
 			Item.height = 36;
 			Item.maxStack = 1;
 			Item.value = 1000000;
-			Item.rare = 12;
+			Item.rare = -12;
 		}
     }
 }
