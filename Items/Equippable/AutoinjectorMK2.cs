@@ -60,17 +60,6 @@ namespace AlchemistNPCReborn.Items.Equippable
                     Calamity.Call("AddRogueCrit", player, 10);
                 }
             }
-            if (!hideVisual)
-            {
-                if (ModLoader.GetMod("SpiritMod") != null)
-                {
-                    player.AddBuff(Mod.Find<ModBuff>("SpiritComb").Type, 2);
-                }
-                if (ModLoader.GetMod("ThoriumMod") != null)
-                {
-                    player.AddBuff(Mod.Find<ModBuff>("ThoriumComb").Type, 2);
-                }
-            }
         }
 
     }
