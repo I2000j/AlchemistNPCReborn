@@ -72,31 +72,31 @@ namespace AlchemistNPCReborn.Projectiles
 			return false;
 		}
 		
-		//public override void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
-		//	// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
-		//	if (Projectile.ai[0] == 1f) // or if(isStickingToTarget) since we made that helper method.
-		//	{
-		//		int npcIndex = (int)Projectile.ai[1];
-		//		if (npcIndex >= 0 && npcIndex < 200 && Main.npc[npcIndex].active) {
-		//			if (Main.npc[npcIndex].behindTiles) {
-		//				drawCacheProjsBehindNPCsAndTiles.Add(index);
-		//			}
-		//			else {
-		//				drawCacheProjsBehindNPCs.Add(index);
-		//			}
-//
-		//			return;
-		//		}
-		//	}
-		//	// Since we aren't attached, add to this list
-		//	drawCacheProjsBehindProjectiles.Add(index);
-		//}
+		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+			// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
+			if (Projectile.ai[0] == 1f) // or if(isStickingToTarget) since we made that helper method.
+			{
+				int npcIndex = (int)Projectile.ai[1];
+				if (npcIndex >= 0 && npcIndex < 200 && Main.npc[npcIndex].active) {
+					if (Main.npc[npcIndex].behindTiles) {
+						behindNPCsAndTiles.Add(index);
+					}
+					else {
+						behindNPCsAndTiles.Add(index);
+					}
 
-		//public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough) {
-		//	// For going through platforms and such, javelins use a tad smaller size
-		//	width = height = 10; // notice we set the width to the height, the height to 10. so both are 10
-		//	return true;
-		//}
+					return;
+				}
+			}
+			// Since we aren't attached, add to this list
+			behindNPCsAndTiles.Add(index);
+		}
+
+		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+			// For going through platforms and such, javelins use a tad smaller size
+			width = height = 10; // notice we set the width to the height, the height to 10. so both are 10
+			return true;
+		}
 		
 		public override void AI()
         {

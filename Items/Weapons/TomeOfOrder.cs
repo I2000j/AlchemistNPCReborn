@@ -32,7 +32,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 
 		public override void SetDefaults()
 		{
-			Item.damage = 9;
+			Item.damage = 30;
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 6;
@@ -59,61 +59,61 @@ namespace AlchemistNPCReborn.Items.Weapons
 		{
 			if (NPC.downedSlimeKing)
 			{
-				Item.damage = 10;
+				Item.damage = 31;
 			}
 			if (NPC.downedBoss1)
 			{
-				Item.damage = 12;
+				Item.damage = 32;
 			}
 			if (NPC.downedBoss2)
 			{
-				Item.damage = 15;
+				Item.damage = 35;
 			}
 			if (NPC.downedQueenBee)
 			{
-				Item.damage = 18;
+				Item.damage = 38;
 			}
 			if (NPC.downedBoss3)
 			{
-				Item.damage = 21;
+				Item.damage = 41;
 			}
 			if (Main.hardMode)
 			{
-				Item.damage = 29;
+				Item.damage = 49;
 				Item.useTime = 10;
 				Item.useAnimation = 30;
 			}
 			if (NPC.downedMechBossAny)
 			{
-				Item.damage = 36;
+				Item.damage = 56;
 			}
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
 			{
-				Item.damage = 42;
+				Item.damage = 62;
 				Item.useTime = 8;
 				Item.useAnimation = 24;
 			}
 			if (NPC.downedPlantBoss)
 			{
-				Item.damage = 52;
+				Item.damage = 72;
 			}
 			if (NPC.downedGolemBoss)
 			{
-				Item.damage = 60;
+				Item.damage = 80;
 				Item.useTime = 7;
 				Item.useAnimation = 21;
 			}
 			if (NPC.downedFishron)
 			{
-				Item.damage = 70;
+				Item.damage = 90;
 			}
 			if (NPC.downedAncientCultist)
 			{
-				Item.damage = 80;
+				Item.damage = 100;
 			}
 			if (NPC.downedMoonlord)
 			{
-				Item.damage = 100;
+				Item.damage = 110;
 			}
 			if (player.altFunctionUse == 2)
 			{
@@ -133,15 +133,5 @@ namespace AlchemistNPCReborn.Items.Weapons
 		{
 			return true;
 		}
-		
-		//public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		//{
-		//	Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(4));
-		//	Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
-		//	float speedX = perturbedSpeed.X;
-		//	float speedY = perturbedSpeed.Y;
-		//	Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, speedX, speedY, Mod.Find<ModProjectile>("Bolt").Type, damage, Item.knockBack, player.whoAmI);
-		//	return false;
-		//}
 	}
 }
