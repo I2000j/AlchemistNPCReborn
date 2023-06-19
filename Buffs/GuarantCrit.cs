@@ -70,7 +70,7 @@ namespace AlchemistNPCReborn.Buffs
                 player.DelBuff(buffIndex);
                 buffIndex--;
             }
-            Mod Calamity = ModLoader.GetMod("CalamityMod");
+            ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
             if (Calamity != null)
             {
                 Calamity.Call("AddRogueCrit", player, 100);

@@ -35,6 +35,16 @@ namespace AlchemistNPCReborn.Projectiles
 		{
 			Player player = Main.player[Projectile.owner];
 			Projectile.Center = player.Center;
+			for(int i = 0; i < 1000; ++i)
+			{
+				if(Main.projectile[i].active && i != Projectile.whoAmI )
+				{
+					if(Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].active && !Main.projectile[i].friendly && Main.projectile[i].hostile)
+					{
+					DestroyProjectile(Main.projectile[i]);
+					}
+				}
+			}
 		}
 		
 		public void DestroyProjectile(Projectile proj)

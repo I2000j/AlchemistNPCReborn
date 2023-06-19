@@ -194,7 +194,7 @@ namespace AlchemistNPCReborn.NPCs
 				NPC.boss = false;
 				NPC.velocity = new Vector2(0, -10);
 				NPC.velocity *= 3f;
-				
+				}
 			}
 			if (distance > 2500f && introduction >= 300)
 			{
@@ -216,37 +216,6 @@ namespace AlchemistNPCReborn.NPCs
 			NPC.buffImmune[39] = true;
 			NPC.buffImmune[69] = true;
 			NPC.buffImmune[203] = true;
-
-			
-
-			if (thoriumLoaded){
-			if (ModLoader.GetMod("ThoriumMod") != null)
-			{
-				ModLoader.TryGetMod("ThoriumMod", out Mod ThoriumMod);
-				if (ThoriumMod.TryFind<ModBuff>("AParalyzed", out ModBuff ThoriumModbuff1))
-                    NPC.buffImmune[ThoriumModbuff1.Type] = true;
-				if (ThoriumMod.TryFind<ModBuff>("Paralyzed", out ModBuff ThoriumModbuff2))
-                    NPC.buffImmune[ThoriumModbuff2.Type] = true;
-			}
-			}
-
-			if (ModLoader.GetMod("CalamityMod") != null)
-			{
-				ModLoader.TryGetMod("CalamityMod", out Mod CalamityMod);
-				if (CalamityMod.TryFind<ModBuff>("SilvaStun", out ModBuff CalamityModbuff1))
-                    NPC.buffImmune[CalamityModbuff1.Type] = true;
-				if (CalamityMod.TryFind<ModBuff>("GlacialState", out ModBuff CalamityModbuff2))
-                    NPC.buffImmune[CalamityModbuff2.Type] = true;
-				if (CalamityMod.TryFind<ModBuff>("ExoFreeze", out ModBuff CalamityModbuff3))
-                    NPC.buffImmune[CalamityModbuff3.Type] = true;
-				if (CalamityMod.TryFind<ModBuff>("MarkedforDeath", out ModBuff CalamityModbuff4))
-                    NPC.buffImmune[CalamityModbuff4.Type] = true;
-				if (CalamityMod.TryFind<ModBuff>("HolyInferno", out ModBuff CalamityModbuff5))
-                    NPC.buffImmune[CalamityModbuff5.Type] = true;
-				if (CalamityMod.TryFind<ModBuff>("HolyFlames", out ModBuff CalamityModbuff6))
-                    NPC.buffImmune[CalamityModbuff6.Type] = true;
-			}
-			}
 			
 			int damage1 = 150;
 			int damage2 = 125;
