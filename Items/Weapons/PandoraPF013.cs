@@ -62,8 +62,8 @@ namespace AlchemistNPCReborn.Items.Weapons
 			if (player.altFunctionUse != 2)
 			{
 			type = 340;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-8, Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+8, Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-8, velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+8, velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
 			return false;
 			}
 			if (player.altFunctionUse == 2)

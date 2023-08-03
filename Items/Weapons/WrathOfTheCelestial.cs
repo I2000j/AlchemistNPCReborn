@@ -48,13 +48,13 @@ namespace AlchemistNPCReborn.Items.Weapons
 		{
 			//float speedX = 12f;
 			//float speedY = 12f;
-			Vector2 perturbedSpeed1 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(5));
-			Vector2 perturbedSpeed2 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(5));
-			Vector2 perturbedSpeed3 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(10));
-			Vector2 perturbedSpeed4 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(10));
-			Vector2 perturbedSpeed5 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(15));
-			Vector2 perturbedSpeed6 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(15));
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, type, damage*4, Item.knockBack, player.whoAmI);
+			Vector2 perturbedSpeed1 = velocity.RotatedByRandom(MathHelper.ToRadians(5));
+			Vector2 perturbedSpeed2 = velocity.RotatedByRandom(MathHelper.ToRadians(5));
+			Vector2 perturbedSpeed3 = velocity.RotatedByRandom(MathHelper.ToRadians(10));
+			Vector2 perturbedSpeed4 = velocity.RotatedByRandom(MathHelper.ToRadians(10));
+			Vector2 perturbedSpeed5 = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+			Vector2 perturbedSpeed6 = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, type, damage*4, Item.knockBack, player.whoAmI);
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed1.X, perturbedSpeed1.Y, type, damage*4, Item.knockBack, player.whoAmI);
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed2.X, perturbedSpeed2.Y, type, damage*4, Item.knockBack, player.whoAmI);
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed3.X, perturbedSpeed3.Y, type, damage*4, Item.knockBack, player.whoAmI);

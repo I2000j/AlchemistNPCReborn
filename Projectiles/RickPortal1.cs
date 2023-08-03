@@ -51,7 +51,7 @@ namespace AlchemistNPCReborn.Projectiles
                         shootToX *= distance * 3;
                         shootToY *= distance * 3;
 						SoundEngine.PlaySound(SoundID.Item93, Projectile.position);
-                        //Projectile.NewProjectile(((Entity) target).GetSource_FromThis((string) null),Projectile.Center.X, Projectile.Center.Y, shootToX, shootToY, ModContent.ProjectileType<Electrobeam>(), Projectile.damage, 0, Main.myPlayer, 0f, 0f);
+                        Projectile.NewProjectile(((Entity) target).GetSource_FromThis((string) null),Projectile.Center.X, Projectile.Center.Y, shootToX, shootToY, 443, Projectile.damage, 0, Main.myPlayer, 0f, 0f);
                         Projectile.ai[0] = 0f;
                     }
                 }

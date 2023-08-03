@@ -101,6 +101,7 @@ namespace AlchemistNPCReborn
         public static bool downedDOGIceQueen;
         public static bool downedSandElemental;
         public static bool foundAntiBuffMode;
+        public static bool foundFlyingCarpet;
         private UserInterface alchemistUserInterface;
         internal ShopChangeUI alchemistUI;
         private UserInterface alchemistUserInterfaceA;
@@ -110,12 +111,88 @@ namespace AlchemistNPCReborn
         private UserInterface alchemistUserInterfaceM;
         internal ShopChangeUIM alchemistUIM;
 
+    
+
         public override void OnWorldLoad()
         {
+            foundAglet = false;
+			foundClimbingClaws = false;
+			foundAnklet = false;
+			foundShoeSpikes = false;
+			foundBalloon = false;
+			foundHermesBoots = false;
+			foundFlippers = false;
+			foundFrogLeg = false;
+			foundCloud = false;
+			foundBlizzard = false;
+			foundSandstorm = false;
+			foundPuffer = false;
+			foundTsunami = false;
+			foundWWB = false;
+			foundIceSkates = false;
+			foundLavaCharm = false;
+			foundHorseshoe = false;
+			foundCMagnet = false;
+			foundPStone = false;
+			foundHTFL = false;
+			foundAnglerEarring = false;
+			foundTackleBox = false;
+			foundJFNeck = false;
+			foundFlowerBoots = false;
+			foundTabi = false;
+			foundGoldRing = false;
+			foundLuckyCoin = false;
+			foundDiscountCard = false;
+			foundNeptuneShell = false;
+			foundString = false;
+			foundGreenCW = false;
+			foundYoyoGlove = false;
+			foundBlindfold = false;
+			foundArmorPolish = false;
+			foundVitamins = false;
+			foundBezoar = false;
+			foundAdhesiveBandage = false;
+			foundFastClock = false;
+			foundTrifoldMap = false;
+			foundMegaphone = false;
+			foundNazar = false;
+			foundSorcE = false;
+			foundWE = false;
+			foundRE = false;
+			foundSumE = false;
+			foundFeralClaw = false;
+			foundTitanGlove = false;
+			foundMagmaStone = false;
+			foundSharkTooth = false;
+			foundBlackBelt = false;
+			foundMoonCharm = false;
+			foundMoonStone = false;
+			foundRifleScope = false;
+			foundPaladinShield = false;
+			foundFrozenTurtleShell = false;
+			foundPutridScent = false;
+			foundFleshKnuckles = false;
+			foundMagicQuiver = false;
+			foundCobaltShield = false;
+			foundPanicNecklace = false;
+			foundCrossNecklace = false;
+			foundStarCloak = false;
+			foundNecromanticScroll = false;
+			foundObsidianRose = false;
+			foundShackle = false;
+			foundSunStone = false;
+			foundHerculesBeetle = false;
+			foundPygmyNecklace = false;
+			foundMP7 = false;
+			foundT1 = false;
+			foundT2 = false;
+			foundT3 = false;
+			foundPHD = false;
+			foundAntiBuffMode = false;
+			foundFlyingCarpet = false;
             downedDOGIceQueen = false;
             downedDOGPumpking = false;
             downedSandElemental = false;
-            foundAntiBuffMode = false;
             if (!Main.dedServ)
             {
                 alchemistUI = new ShopChangeUI();

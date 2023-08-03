@@ -1,3 +1,4 @@
+using Terraria.DataStructures;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -12,20 +13,69 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ModLoader.IO;
 using Terraria.Localization;
+using Terraria.Utilities;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
+using System.Linq;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+using Terraria.ModLoader.IO;
+using Terraria.Localization;
+using AlchemistNPCReborn.Interface;
+using AlchemistNPCReborn;
+using Terraria.UI;
+using Terraria.GameInput;
 
 namespace AlchemistNPCReborn.Items
 {
     public class AlchemistGlobalItem : GlobalItem
     {
         public static bool on = false;
+        public static bool stop = false;
         public static bool Luck = false;
         public static bool Luck2 = false;
+        public static bool Menacing = false;
+        public static bool Lucky = false;
+        public static bool Violent = false;
+        public static bool Warding = false;
+        public static bool PerfectionToken = false;
 
         public override void HoldItem(Item item, Player player)
         {
             if (item.type == 3258 && NPC.AnyNPCs(ModContent.NPCType<NPCs.Knuckles>()))
             {
                 item.damage = 1;
+            }
+            for (int j = 0; j < player.inventory.Length; j++)
+            {
+                if (player.inventory[j].type == Mod.Find<ModItem>("DimensionalCasket").Type)
+                {
+                    var keybinds = PlayerInput.CurrentProfile.InputModes[InputMode.Keyboard].KeyStatus["Inventory"];
+                    string keybind = "Escape";
+                    if(keybinds.Count > 0)
+                    {
+                        keybind = keybinds[0];
+                    }
+
+                    //Microsoft.Xna.Framework.Input.Keys closeCasket;
+                    //if (Enum.TryParse(keybind, out closeCasket) )
+                    //{
+                    //    if (Main.keyState.IsKeyDown(closeCasket))
+                    //    {
+                    //        DimensionalCasketUI.k = -1;
+                    //        DimensionalCasketUI.forcetalk = false;
+                    //    }
+                    //}
+                    //if (DimensionalCasketUI.forcetalk == true)
+                    //{
+                    //    Main.player[Main.myPlayer].talkNPC = DimensionalCasketUI.k;
+                    //}
+                }
             }
 		}
 
@@ -49,11 +99,31 @@ namespace AlchemistNPCReborn.Items
                 Luck = true;
                 Luck2 = true;
             }
+            if (item.type == ItemType<Items.Misc.PerfectionToken>())
+            {
+                PerfectionToken = true;
+            }
+            if (item.type == ItemType<Items.Misc.MenacingToken>())
+            {
+                Menacing = true;
+            }
+            if (item.type == ItemType<Items.Misc.LuckyToken>())
+            {
+                Lucky = true;
+            }
+            if (item.type == ItemType<Items.Misc.ViolentToken>())
+            {
+                Violent = true;
+            }
+            if (item.type == ItemType<Items.Misc.WardingToken>())
+            {
+                Warding = true;
+            }
         }
 
         public override int ChoosePrefix(Item item, UnifiedRandom rand)
         {
-            if (Luck == true)
+            if (Luck == true && PerfectionToken == false)
             {
                 if (item.CountsAsClass(DamageClass.Melee))
                 {
@@ -96,7 +166,7 @@ namespace AlchemistNPCReborn.Items
                         return 82;
                 }
             }
-            if (Luck2 == true)
+            if (Luck2 == true && !Menacing && !Lucky && !Violent && !Warding)
             {
                 if (item.accessory)
                 {
@@ -110,7 +180,181 @@ namespace AlchemistNPCReborn.Items
                         return 65;
                 }
             }
+            if (PerfectionToken == true)
+            {
+                if (item.type == Mod.Find<ModItem>("LastTantrum").Type)
+                {
+                    return 59;
+                }
+                if (ModLoader.TryGetMod("CalamityMod", out Mod Calamity) != null)
+                {
+                    if (item.type == ModLoader.GetMod("CalamityMod").Find<ModItem>("P90").Type)
+                    {
+                        return 57;
+                    }
+                    if (item.type == ModLoader.GetMod("CalamityMod").Find<ModItem>("ColdheartIcicle").Type)
+                    {
+                        return 15;
+                    }
+                    if (item.type == ModLoader.GetMod("CalamityMod").Find<ModItem>("HalibutCannon").Type)
+                    {
+                        return 17;
+                    }
+                }
+                if (item.damage > 3 && item.useTime <= 4 && item.useAnimation <= 4 && item.maxStack == 1)
+                {
+                    return Mod.Find<ModPrefix>("Ancient").Type;
+                }
+                if (item.damage > 3 && item.CountsAsClass(DamageClass.Melee) && item.maxStack == 1)
+                {
+                    return Mod.Find<ModPrefix>("Primal").Type;
+                }
+                if (item.damage > 3 && item.CountsAsClass(DamageClass.Magic) && item.maxStack == 1)
+                {
+                    return Mod.Find<ModPrefix>("Arcana").Type;
+                }
+                if (item.damage > 3 && item.CountsAsClass(DamageClass.Summon) && item.maxStack == 1)
+                {
+                    return Mod.Find<ModPrefix>("Demiurgic").Type;
+                }
+                if (item.damage > 3 && (item.CountsAsClass(DamageClass.Ranged) || item.CountsAsClass(DamageClass.Throwing)) && item.maxStack == 1)
+                {
+                    return Mod.Find<ModPrefix>("Immortal").Type;
+                }
+                if (item.damage > 3)
+                {
+                    if (item.CountsAsClass(DamageClass.Melee))
+                    {
+                        return 81;
+                    }
+                    if (item.CountsAsClass(DamageClass.Ranged) && !item.consumable && item.useTime <= 3)
+                    {
+                        return 59;
+                    }
+                    if (item.CountsAsClass(DamageClass.Ranged) && !item.consumable && item.knockBack <= 0)
+                    {
+                        return 60;
+                    }
+                    if (item.CountsAsClass(DamageClass.Ranged) && !item.consumable && item.knockBack > 0)
+                    {
+                        return 82;
+                    }
+                    if (item.CountsAsClass(DamageClass.Magic) && item.knockBack <= 0)
+                    {
+                        return 60;
+                    }
+                    if (item.CountsAsClass(DamageClass.Magic) && item.useTime <= 2)
+                    {
+                        return 59;
+                    }
+                    if (item.CountsAsClass(DamageClass.Magic) && item.mana <= 4)
+                    {
+                        return 59;
+                    }
+                    if (item.CountsAsClass(DamageClass.Magic) && item.knockBack > 0)
+                    {
+                        return 83;
+                    }
+                    if (item.CountsAsClass(DamageClass.Summon))
+                    {
+                        return 83;
+                    }
+                    if (item.CountsAsClass(DamageClass.Throwing) && !item.consumable && item.useTime <= 3)
+                    {
+                        return 59;
+                    }
+                    if (item.CountsAsClass(DamageClass.Throwing) && !item.consumable)
+                    {
+                        return 82;
+                    }
+                }
+            }
+            if (item.accessory)
+            {
+                if (Menacing)
+                {
+                    return 72;
+                }
+                if (Lucky)
+                {
+                    return 68;
+                }
+                if (Violent)
+                {
+                    return 80;
+                }
+                if (Warding)
+                {
+                    return 65;
+                }
+            }
             return -1;
+        }
+
+        public override bool PreReforge(Item item)
+        {
+            Player player = Main.player[Main.myPlayer];
+            if (Main.player[Main.myPlayer].HasItem(Mod.Find<ModItem>("PerfectionToken").Type) && item.damage > 3)
+            {
+                Item[] inventory = Main.player[Main.myPlayer].inventory;
+                for (int k = 0; k < inventory.Length; k++)
+                {
+                    if (inventory[k].type == Mod.Find<ModItem>("PerfectionToken").Type)
+                    {
+                        inventory[k].stack--;
+                        return true;
+                    }
+                }
+            }
+            if (Main.player[Main.myPlayer].HasItem(Mod.Find<ModItem>("MenacingToken").Type))
+            {
+                Item[] inventory = Main.player[Main.myPlayer].inventory;
+                for (int k = 0; k < inventory.Length; k++)
+                {
+                    if (inventory[k].type == Mod.Find<ModItem>("MenacingToken").Type)
+                    {
+                        inventory[k].stack--;
+                        return true;
+                    }
+                }
+            }
+            if (Main.player[Main.myPlayer].HasItem(Mod.Find<ModItem>("LuckyToken").Type))
+            {
+                Item[] inventory = Main.player[Main.myPlayer].inventory;
+                for (int k = 0; k < inventory.Length; k++)
+                {
+                    if (inventory[k].type == Mod.Find<ModItem>("LuckyToken").Type)
+                    {
+                        inventory[k].stack--;
+                        return true;
+                    }
+                }
+            }
+            if (Main.player[Main.myPlayer].HasItem(Mod.Find<ModItem>("ViolentToken").Type))
+            {
+                Item[] inventory = Main.player[Main.myPlayer].inventory;
+                for (int k = 0; k < inventory.Length; k++)
+                {
+                    if (inventory[k].type == Mod.Find<ModItem>("ViolentToken").Type)
+                    {
+                        inventory[k].stack--;
+                        return true;
+                    }
+                }
+            }
+            if (Main.player[Main.myPlayer].HasItem(Mod.Find<ModItem>("WardingToken").Type))
+            {
+                Item[] inventory = Main.player[Main.myPlayer].inventory;
+                for (int k = 0; k < inventory.Length; k++)
+                {
+                    if (inventory[k].type == Mod.Find<ModItem>("WardingToken").Type)
+                    {
+                        inventory[k].stack--;
+                        return true;
+                    }
+                }
+            }
+            return base.PreReforge(item);
         }
 
         public override bool ConsumeItem(Item item, Player player)
@@ -151,9 +395,112 @@ namespace AlchemistNPCReborn.Items
             return true;
         }
 
+        public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
+        {
+            if (player.HasBuff(Mod.Find<ModBuff>("DemonSlayer").Type))
+            {
+                return Main.rand.NextFloat() >= .25f;
+            }
+            return true;
+        }
+
+        public override float UseTimeMultiplier(Item item, Player player)
+        {
+            if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).GolemBooster == 1 && item.useTime > 3)
+            {
+                return 1.1f;
+            }
+            if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).Symbiote == true && item.useTime > 3)
+            {
+                if (!Main.hardMode)
+                {
+                    return 1.1f;
+                }
+                if (Main.hardMode && !NPC.downedMoonlord)
+                {
+                    return 1.15f;
+                }
+                if (NPC.downedMoonlord)
+                {
+                    return 1.2f;
+                }
+            }
+            return base.UseTimeMultiplier(item, player);
+        }
+
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            AlchemistNPCRebornPlayer modPlayer = player.GetModPlayer<AlchemistNPCRebornPlayer>();
+            if (player.HasBuff(Mod.Find<ModBuff>("DemonSlayer").Type) && item.CountsAsClass(DamageClass.Throwing) && Main.rand.Next(3) == 0)
+            {
+                Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y - 12, velocity.X, velocity.Y, type, damage, knockback, player.whoAmI);
+            }
+            if (modPlayer.Rampage == true && type == 14)
+            {
+                type = Mod.Find<ModProjectile>("Chloroshard").Type;
+            }
+            if (modPlayer.Rampage == true && type == 1)
+            {
+                type = Mod.Find<ModProjectile>("ChloroshardArrow").Type;
+            }
+            if (modPlayer.DeltaRune && item.CountsAsClass(DamageClass.Melee) && Main.rand.NextBool(20))
+            {
+                Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, Mod.Find<ModProjectile>("RedWave").Type, 1111, 1f, player.whoAmI);
+            }
+            if (modPlayer.DeltaRune && item.CountsAsClass(DamageClass.Magic) && Main.rand.NextBool(30))
+            {
+                float numberProjectiles = 9;
+                float rotation = MathHelper.ToRadians(8);
+                Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
+                for (int i = 0; i < numberProjectiles; i++)
+                {
+                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .5f;
+                    Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, perturbedSpeed.X, perturbedSpeed.Y, Mod.Find<ModProjectile>("MM").Type, 1337, knockback, player.whoAmI);
+                }
+            }
+            if (modPlayer.Barrage)
+            {
+                SoundEngine.PlaySound(SoundID.Item91, player.position);
+                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(5));
+                int p = Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, Mod.Find<ModProjectile>("EnergyBall").Type, item.damage / 5, 1f, player.whoAmI);
+                if (item.useTime > 10)
+                {
+                    Vector2 perturbedSpeed2 = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(4));
+                    Vector2 perturbedSpeed3 = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(4));
+                    Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed2.X, perturbedSpeed2.Y, Mod.Find<ModProjectile>("EnergyBall").Type, item.damage / 4, 1f, player.whoAmI);
+                    Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed3.X, perturbedSpeed3.Y, Mod.Find<ModProjectile>("EnergyBall").Type, item.damage / 4, 1f, player.whoAmI);
+                }
+            }
+            return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+        }
+
         public override bool? UseItem(Item item, Player player)
         {
             AlchemistNPCRebornPlayer modPlayer = player.GetModPlayer<AlchemistNPCRebornPlayer>();
+            if (modPlayer.Barrage && item.damage > 0 && Main.GameUpdateCount % 6 == 0)
+            {
+                SoundEngine.PlaySound(SoundID.Item91, player.position);
+                float num1 = 9f;
+                Vector2 vector2 = new Vector2(player.position.X + (float)player.width * 0.5f, player.position.Y + (float)player.height * 0.5f);
+                float f1 = (float)Main.mouseX + Main.screenPosition.X - vector2.X;
+                float f2 = (float)Main.mouseY + Main.screenPosition.Y - vector2.Y;
+                if ((double)player.gravDir == -1.0)
+                    f2 = Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY - vector2.Y;
+                float num4 = (float)Math.Sqrt((double)f1 * (double)f1 + (double)f2 * (double)f2);
+                float num5;
+                if (float.IsNaN(f1) && float.IsNaN(f2) || (double)f1 == 0.0 && (double)f2 == 0.0)
+                {
+                    f1 = (float)player.direction;
+                    f2 = 0.0f;
+                    num5 = num1;
+                }
+                else
+                    num5 = num1 / num4;
+                float SpeedX = f1 * num5;
+                float SpeedY = f2 * num5;
+                Vector2 perturbedSpeed = new Vector2(SpeedX, SpeedY).RotatedByRandom(MathHelper.ToRadians(5));
+                Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector2.X, vector2.Y, perturbedSpeed.X, perturbedSpeed.Y, Mod.Find<ModProjectile>("EnergyBall").Type, item.damage / 5, 1f, player.whoAmI);
+            }
             if (item.type == 1991 || item.type == 3183)
             {
                 for (int v = 0; v < 200; ++v)
@@ -260,23 +607,58 @@ namespace AlchemistNPCReborn.Items
                     }
                 }
             }
-            if (modPlayer.AlchemistCharmTier4)
+            if (modPlayer.KeepBuffs == 1 && (item.buffTime > 0))
             {
-                player.AddBuff(item.buffType, item.buffTime + (item.buffTime / 2), true);
+                if (modPlayer.AlchemistCharmTier4)
+                {
+                    player.AddBuff(item.buffType, item.buffTime * 2 + ((item.buffTime * 2) / 2), true);
+                }
+                else if (modPlayer.AlchemistCharmTier3)
+                {
+                    player.AddBuff(item.buffType, item.buffTime * 2 + (((item.buffTime * 2) / 20) * 7), true);
+                }
+                else if (modPlayer.AlchemistCharmTier2)
+                {
+                    player.AddBuff(item.buffType, item.buffTime * 2 + ((item.buffTime * 2) / 4), true);
+                }
+                else if (modPlayer.AlchemistCharmTier1)
+                {
+                    player.AddBuff(item.buffType, item.buffTime * 2 + ((item.buffTime * 2) / 10), true);
+                }
+                else player.AddBuff(item.buffType, item.buffTime * 2, true);
             }
-            else if (modPlayer.AlchemistCharmTier3)
+            if (modPlayer.KeepBuffs == 0 && (item.buffTime > 0))
             {
-                player.AddBuff(item.buffType, item.buffTime + ((item.buffTime / 20) * 7), true);
-            }
-            else if (modPlayer.AlchemistCharmTier2)
-            {
-                player.AddBuff(item.buffType, item.buffTime + (item.buffTime / 4), true);
-            }
-            else if (modPlayer.AlchemistCharmTier1)
-            {
-                player.AddBuff(item.buffType, item.buffTime + (item.buffTime / 10), true);
+                if (modPlayer.AlchemistCharmTier4)
+                {
+                    player.AddBuff(item.buffType, item.buffTime + (item.buffTime / 2), true);
+                }
+                else if (modPlayer.AlchemistCharmTier3)
+                {
+                    player.AddBuff(item.buffType, item.buffTime + ((item.buffTime / 20) * 7), true);
+                }
+                else if (modPlayer.AlchemistCharmTier2)
+                {
+                    player.AddBuff(item.buffType, item.buffTime + (item.buffTime / 4), true);
+                }
+                else if (modPlayer.AlchemistCharmTier1)
+                {
+                    player.AddBuff(item.buffType, item.buffTime + (item.buffTime / 10), true);
+                }
             }
             return base.UseItem(item, player);
+        }
+
+        public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+        {
+            if (type == ProjectileID.Bullet && player.GetModPlayer<AlchemistNPCRebornPlayer>().Rampage)
+            {
+                type = Mod.Find<ModProjectile>("Chloroshard").Type;
+            }
+            if (type == 1 && player.GetModPlayer<AlchemistNPCRebornPlayer>().Rampage)
+            {
+                type = Mod.Find<ModProjectile>("ChloroshardArrow").Type;
+            }
         }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -1257,6 +1639,106 @@ namespace AlchemistNPCReborn.Items
                 }
             }
 			*/
+        }
+
+        public override void OpenVanillaBag(string context, Player player, int arg)
+        {
+            if (context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("TimeTwistBraclet").Type);
+            }
+            if (Main.hardMode && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("SuspiciousLookingScythe").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("HeartofYuiS").Type);
+            }
+            if (Main.hardMode && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("StatsChecker").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(200) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BanHammer").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("PinkGuyHead").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("PinkGuyBody").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("PinkGuyLegs").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BlackCatHead").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BlackCatBody").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BlackCatLegs").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("Skyline222Hair").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("Skyline222Body").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("Skyline222Legs").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(150) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("somebody0214Hood").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("somebody0214Robe").Type);
+            }
+            if (NPC.downedPlantBoss && context == "bossBag" && Main.rand.Next(250) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BloodMoonCirclet").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BloodMoonDress").Type);
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("BloodMoonStockings").Type);
+            }
+            if (NPC.downedMoonlord && context == "bossBag" && Main.rand.Next(300) == 0)
+            {
+                player.QuickSpawnItem(((Entity) player).GetSource_FromThis((string) null), Mod.Find<ModItem>("StrangeTopHat").Type);
+            }
+        }
+
+        public override void VerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+        {
+            AlchemistNPCRebornPlayer modPlayer = player.GetModPlayer<AlchemistNPCRebornPlayer>();
+            if (modPlayer.BetsyBooster == 1)
+            {
+                maxCanAscendMultiplier += 1f;
+                maxAscentMultiplier += 1f;
+            }
+        }
+
+        public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
+        {
+            AlchemistNPCRebornPlayer modPlayer = player.GetModPlayer<AlchemistNPCRebornPlayer>();
+            if (modPlayer.BetsyBooster == 1)
+            {
+                speed += 0.1f;
+                acceleration += 0.1f;
+            }
+            if (player.HasBuff(Mod.Find<ModBuff>("Exhausted").Type))
+            {
+                speed *= 0.8f;
+                acceleration *= 0.8f;
+            }
+            if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).chargetime >= 390)
+            {
+                speed *= 0.75f;
+                acceleration *= 0.75f;
+            }
+            else if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).chargetime >= 210)
+            {
+                speed *= 0.9f;
+                acceleration *= 0.9f;
+            }
+        }
+
+        protected override bool CloneNewInstances
+        {
+            get
+            {
+                return true;
+            }
         }
 
         public override bool InstancePerEntity

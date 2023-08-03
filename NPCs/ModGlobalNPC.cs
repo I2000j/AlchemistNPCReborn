@@ -51,6 +51,9 @@ namespace AlchemistNPCReborn.NPCs
 		public static int kc = 0;
 		public static bool ks = false;
 		public static bool ksu = false;
+		public static int gr = 0;
+		public static bool gu = false;
+		public static bool geru = false;
 		public bool start = false;
         public bool rainbowdust = false;
 		public bool cheat = false;
@@ -455,6 +458,37 @@ namespace AlchemistNPCReborn.NPCs
 					kc++;
 				}
 			}
+
+			if (npc.type == ModContent.NPCType<GameError>())
+			{
+				if (!start)
+				{
+					npc.position.Y = player.position.Y - 350;
+					npc.position.X = player.position.X;
+					start = true;
+				}
+				if (gu == false)
+				{
+					gr++;
+				}
+				if (gr == 2)
+				{
+					Main.NewText("*$%7#74213!#34%$@", 255, 255, 255);
+				}
+				if (gr < 180)
+				{
+					npc.velocity.X = 0f;
+					npc.velocity.Y = 0f;
+					npc.dontTakeDamage = true;
+				}
+				if (gr == 180)
+				{
+					Main.NewText(":JLSJFOWEP:FJDS:M;vkf,o[irgt]", 255, 0, 0);
+					gu = true;
+					npc.dontTakeDamage = false;
+					gr++;
+				}
+			}
 			
 			if (npc.type == ModContent.NPCType<NPCs.BillCipher>())
 			{
@@ -472,22 +506,23 @@ namespace AlchemistNPCReborn.NPCs
 					}
 					start = true;
 				}
+				var source = npc.GetSource_FromAI();
 				if (npc.life <= npc.lifeMax*0.6f && !i1)
 				{
 					Main.NewText(Language.GetTextValue("Mods.AlchemistNPCReborn.BillCipherChat6"), 10, 255, 10);
-					//Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("VoodooDoll"));
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("VoodooDoll").Type);
 					i1 = true;
 				}
 				if (npc.life <= npc.lifeMax*0.4f && !i2)
 				{
 					Main.NewText(Language.GetTextValue("Mods.AlchemistNPCReborn.BillCipherChat6"), 10, 255, 10);
-					//Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ScreamingHead"));
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("ScreamingHead").Type);
 					i2 = true;
 				}
 				if (npc.life <= npc.lifeMax*0.2f && !i3)
 				{
 					Main.NewText(Language.GetTextValue("Mods.AlchemistNPCReborn.BillCipherChat6"), 10, 255, 10);
-					//Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CursedMirror"));
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("CursedMirror").Type);
 					i3 = true;
 				}
 				if (npc.life <= (npc.lifeMax - npc.lifeMax/4) && !intermission1 && !stop1)
@@ -710,6 +745,8 @@ namespace AlchemistNPCReborn.NPCs
         public override void OnKill(NPC npc)
         {
 			var source = npc.GetSource_FromAI();
+			Player player = Main.player[Main.myPlayer];
+
 			if (AlchemistNPCRebornWorld.foundAntiBuffMode)
 			{
 				if (npc.type == NPCID.KingSlime)
@@ -812,7 +849,6 @@ namespace AlchemistNPCReborn.NPCs
 				}
 				for (int k = 0; k < 255; k++)
 				{
-					Player player = Main.player[k];
 					if (player.active)
 					{
 						AlchemistNPCRebornPlayer modPlayer = player.GetModPlayer<AlchemistNPCRebornPlayer>();
@@ -836,6 +872,170 @@ namespace AlchemistNPCReborn.NPCs
 								Item.NewItem(source, npc.width, npc.height, ItemID.FragmentVortex, 1, 1);
 							}
 						}
+					}
+				}
+			}
+
+			if (npc.type == NPCID.Plantera)
+			{
+				if (Main.rand.Next(20) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("Hive").Type, 1, false, 83);
+				}
+			}
+			if (npc.type == NPCID.Golem)
+			{
+				if (Main.rand.Next(10) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					//Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("Fuaran").Type);
+				}
+			}
+
+			
+			if (player.HeldItem.type == Mod.Find<ModItem>("ChristmasW").Type && Main.rand.NextBool(33))
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
+			}
+
+			if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).Extractor && npc.boss == true && npc.lifeMax >= 50000 && (Main.rand.Next(3) == 0))
+			{
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("SoulEssence").Type);
+			}
+			if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).Extractor && npc.boss == true && npc.lifeMax >= 55000 && (Main.rand.Next(10) == 0))
+			{
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("HateVial").Type);
+			}
+			if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).TimeTwist && npc.boss == false && Main.rand.NextBool(4))
+			{
+				npc.NPCLoot();
+			}
+
+			if (WorldGen.crimson)
+			{
+				if ((npc.type == 239 || npc.type == 240) && Main.rand.NextBool(10))
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("SpiderFangarang").Type);
+				}
+			}
+			if (!WorldGen.crimson)
+			{
+				if ((npc.type == 164 || npc.type == 165) && Main.rand.NextBool(10))
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("SpiderFangarang").Type);
+				}
+			}
+			if ((npc.type == 236 || npc.type == 237) && Main.rand.NextBool(20))
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("FangBallista").Type);
+			}
+			if ((npc.type == 164 || npc.type == 165) && Main.rand.NextBool(20))
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("SwordofArachna").Type);
+			}
+			if (npc.lifeMax >= 25000 && npc.boss && Main.rand.Next(20) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("PerfectionToken").Type);
+			}
+			if (npc.lifeMax >= 75000 && npc.boss && NPC.downedMoonlord && Main.rand.Next(200) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("Devilsknife").Type);
+			}
+			if (npc.lifeMax >= 75000 && npc.boss && NPC.downedMoonlord && Main.rand.Next(33) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("WailOfBanshee").Type);
+			}
+			if (npc.lifeMax >= 75000 && npc.boss && NPC.downedMoonlord && Main.rand.Next(33) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("ExecutionersEyes").Type);
+			}
+			if (npc.lifeMax >= 75000 && npc.boss && NPC.downedMoonlord && Main.rand.Next(33) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("SymbolOfPain").Type);
+			}
+			if (npc.lifeMax >= 75000 && npc.boss && NPC.downedMoonlord && Main.rand.Next(33) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("MeteorSwarm").Type);
+			}
+			if (npc.lifeMax >= 75000 && npc.boss && NPC.downedMoonlord && Main.rand.Next(33) == 0)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("CloakOfFear").Type);
+			}
+			if (npc.type == NPCID.WallofFlesh)
+			{
+				source = npc.GetSource_FromAI();
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("LuckCharm").Type);
+				//Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("PHD").Type);
+				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("BrokenDimensionalCasket").Type);
+				if (NPC.downedDeerclops)
+                {
+                    Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<References.CodexUmbra>());
+                }
+			}
+			if (!npc.SpawnedFromStatue)
+			{
+				if (Main.rand.Next(25000) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("HolyAvenger").Type, 1, false, 81);
+				}
+				if (Main.rand.Next(25000) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("Penetrator").Type, 1, false, 82);
+				}
+				if (Main.rand.Next(25000) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("TomeOfOrder").Type, 1, false, 83);
+				}
+				if (Main.rand.Next(25000) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("FlaskoftheAlchemist").Type, 1, false, 82);
+				}
+				if (Main.rand.Next(25000) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("CounterMatter").Type, 1, false);
+				}
+				if (Main.rand.Next(33333) == 0)
+				{
+					source = npc.GetSource_FromAI();
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("CrackedCrown").Type, 1, false);
+				}
+			}
+			
+			if (npc.type == NPCID.DungeonGuardian)
+			{
+				source = npc.GetSource_FromAI();
+				if (!Main.expertMode)
+				{
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("EmagledFragmentation").Type, Main.rand.Next(20, 30));
+					if (Main.rand.Next(10) == 0)
+					{
+						Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("OtherworldlyAmulet").Type);
+					}
+				}
+				if (Main.expertMode)
+				{
+					Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("EmagledFragmentation").Type, Main.rand.Next(40, 50));
+					if (Main.rand.Next(5) == 0)
+					{
+						Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, Mod.Find<ModItem>("OtherworldlyAmulet").Type);
 					}
 				}
 			}
@@ -1081,14 +1281,7 @@ namespace AlchemistNPCReborn.NPCs
 				//}
 			}
 			
-            if (npc.type == NPCID.WallofFlesh)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Misc.LuckCharm>(), 1));
-                if (NPC.downedDeerclops)
-                {
-                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<References.CodexUmbra>(), 1));
-                }
-            }
+                
         
             //if (npc.type == ModContent.NPCType<Operator>())
             //{

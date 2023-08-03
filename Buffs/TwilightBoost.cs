@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using System.Linq;
@@ -60,43 +60,23 @@ namespace AlchemistNPCReborn.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            //if (player.HeldItem.type != mod.ItemType("Twilight"))
-            //{
-            //    player.DelBuff(buffIndex);
-            //    buffIndex--;
-            //}
+            ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
+            if (player.HeldItem.type != Mod.Find<ModItem>("Twilight").Type)
+            {
+                player.DelBuff(buffIndex);
+                buffIndex--;
+            }
             player.immune = true;
             
             player.GetDamage(DamageClass.Melee) += 3f;
             player.GetDamage(DamageClass.Ranged) += 3f;
             player.GetDamage(DamageClass.Magic) += 3f;
             player.GetDamage(DamageClass.Summon) += 3f;
-            //if (ModLoader.GetMod("ThoriumMod") != null)
-            //{
-            //    ThoriumBoosts(player);
-            //}
-            //if (ModLoader.GetMod("Redemption") != null)
-            //{
-            //    RedemptionBoost(player);
-            //}
-            Mod Calamity = ModLoader.GetMod("CalamityMod");
             if (Calamity != null)
             {
                 Calamity.Call("AddRogueDamage", player, 300);
             }
         }
 
-        //private void RedemptionBoost(Player player)
-        //{
-        //    Redemption.DruidDamagePlayer RedemptionPlayer = player.GetModPlayer<Redemption.DruidDamagePlayer>();
-        //    RedemptionPlayer.druidDamage += 3f;
-        //}
-//
-        //private void ThoriumBoosts(Player player)
-        //{
-        //    ThoriumMod.ThoriumPlayer ThoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
-        //    ThoriumPlayer.symphonicDamage += 3f;
-        //    ThoriumPlayer.radiantBoost += 3f;
-        //}
     }
 }

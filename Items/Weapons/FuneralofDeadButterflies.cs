@@ -52,8 +52,8 @@ namespace AlchemistNPCReborn.Items.Weapons
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-5, Item.shootSpeed, Item.shootSpeed, type, (damage/3)*2, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, Mod.Find<ModProjectile>("FDB").Type, (damage/3)*2, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-5, velocity.X, velocity.Y, type, (damage/3)*2, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, Mod.Find<ModProjectile>("FDB").Type, (damage/3)*2, Item.knockBack, player.whoAmI);
 			return false;
 		}
 		

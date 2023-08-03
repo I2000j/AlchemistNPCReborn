@@ -56,12 +56,12 @@ namespace AlchemistNPCReborn.Items.Weapons
 		int numberProjectiles = 4;
 		for (int i = 0; i < numberProjectiles; i++)
 			{
-			Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(5));
+			Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(5));
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, Mod.Find<ModProjectile>("FungalosphereProjectile").Type, damage, Item.knockBack, player.whoAmI);
 			}
 		for (int i = 0; i < numberProjectiles; i++)
 			{
-			Vector2 perturbedSpeed1 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(5));
+			Vector2 perturbedSpeed1 = velocity.RotatedByRandom(MathHelper.ToRadians(5));
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed1.X, perturbedSpeed1.Y, Mod.Find<ModProjectile>("FungalosphereProjectileDummy").Type, damage, Item.knockBack, player.whoAmI);
 			}
 			return true;

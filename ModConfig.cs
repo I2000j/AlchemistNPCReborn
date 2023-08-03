@@ -63,15 +63,21 @@ namespace AlchemistNPCReborn
 		[Tooltip("True to enable Tinkerer NPC spawn, false to disable. True by default")]
 		public bool TinkererSpawn;
 
-		//[DefaultValue(true)]
-		//[Label("Explorer Spawn toggle")]
-		//[Tooltip("True to enable Explorer NPC spawn, false to disable. True by default")]
-		//public bool ExplorerSpawn;
+		[DefaultValue(true)]
+		[Label("Explorer Spawn toggle")]
+		[Tooltip("True to enable Explorer NPC spawn, false to disable. True by default")]
+		public bool ExplorerSpawn;
+
 
 		[DefaultValue(true)]
 		[Label("Torn Notes Drop toggle")]
 		[Tooltip("True to enable Torn Notes drop, false to disable. True by default")]
 		public bool TornNotesDrop;
+
+		[DefaultValue(true)]
+		[Label("Reversity Coins Drop toggle")]
+		[Tooltip("True to enable Reversity Coins drop, false to disable. True by default")]
+		public bool CoinsDrop;
 		
 		[DefaultValue(false)]
 		[Label("Lifeform Analyzer laser pointing")]
@@ -140,6 +146,11 @@ namespace AlchemistNPCReborn
 		[Label("Shop Change Delay")]
 		[Tooltip("Delay before shop can be changed after opening interface. 10 frames by default")]
 		public int ShopChangeDelay;
+
+		[DefaultValue(false)]
+		[Label("Support for the Lite version?")]
+		[Tooltip("???")]
+		public bool GameError;
 
 		public override ModConfig Clone() {
 			var clone = (ModConfiguration)base.Clone();

@@ -1,0 +1,82 @@
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Chat;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+using Terraria.Localization;
+using AlchemistNPCReborn.Interface;
+
+namespace AlchemistNPCReborn.Items.Misc
+{
+	public class DimensionalCasket : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Dimensional Casket");
+			Tooltip.SetDefault("Modified Dimensional Casket"
+			+"\nAllows to trade with any NPC from any distance"
+			+"\nClick to open UI"
+			+"\nPress ESC to stop dialing");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Телепортирующая Шкатулка");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Модифицированная межизмеренческая шкатулка\nПозволяет торговать с любым NPC с любого расстояния\nКлик для открытия интерфейса\nНажмите ESC для прекращения связи");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "次元匣");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "修好的次元匣\n允许无视距离与NPC交易\n点击打开UI\n按ESC键关闭");
+        }
+
+		public override void SetDefaults()
+		{
+			Item.width = 32;
+			Item.height = 32;
+			Item.value = 5000000;
+			Item.rare = 10;
+			Item.useStyle = 1;
+            Item.useAnimation = 15;
+            Item.useTime = 15;
+            Item.consumable = false;
+			Item.expert = true;
+		}
+		
+		public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
+		{
+			if (Main.myPlayer == player.whoAmI)
+			{
+				//DimensionalCasketUI.visible = true;
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("I'm sorry, but I do not know how to fix this item. It will be done later."), new Color(255, 255, 255));
+			}
+			return true;
+		}
+		
+		public override bool ConsumeItem(Player player)
+		{
+			return false;
+		}
+		
+		public override bool CanRightClick()
+        {            
+            return true;
+        }
+
+        public override void RightClick(Player player)
+        {
+			if (Main.myPlayer == player.whoAmI)
+			{
+				//DimensionalCasketUI.visible = true;
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("I'm sorry, but I do not know how to fix this item. It will be done later."), new Color(255, 255, 255));
+			}
+		}
+		
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(Mod.Find<ModItem>("BrokenDimensionalCasket").Type);
+			recipe.AddIngredient(Mod.Find<ModItem>("DivineLava").Type, 15);
+			recipe.AddRecipeGroup("AlchemistNPCReborn:Tier3Bar", 10);
+			recipe.AddIngredient(ItemID.MechanicalBatteryPiece);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
+		}
+	}
+}

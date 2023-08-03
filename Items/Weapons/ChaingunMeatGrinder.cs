@@ -91,19 +91,19 @@ namespace AlchemistNPCReborn.Items.Weapons
 		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(3));
+			Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(3));
 			Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
 			float speedX = perturbedSpeed.X;
 			float speedY = perturbedSpeed.Y;
-			Vector2 perturbedSpeed2 = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(3));
-			Vector2 perturbedSpeed3 = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(3));
+			Vector2 perturbedSpeed2 = velocity.RotatedByRandom(MathHelper.ToRadians(3));
+			Vector2 perturbedSpeed3 = velocity.RotatedByRandom(MathHelper.ToRadians(3));
 			float speedX2 = perturbedSpeed2.X;
 			float speedY2 = perturbedSpeed2.Y;
 			float speedX3 = perturbedSpeed3.X;
 			float speedY3 = perturbedSpeed3.Y;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y+4, speedX2, speedY2, 638, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, speedX, speedY, 638, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y-4, speedX3, speedY3, 638, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(source, vector.X, vector.Y+4, speedX2, speedY2, 638, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(source, vector.X, vector.Y, speedX, speedY, 638, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(source, vector.X, vector.Y-4, speedX3, speedY3, 638, damage, Item.knockBack, player.whoAmI);
 			return false;
 		}
 		

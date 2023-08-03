@@ -119,7 +119,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 				int numberProjectiles = 3 + Main.rand.Next(3);
 				for (int i = 0; i < numberProjectiles; i++)
 				{
-					Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(5));
+					Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(5));
 					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, Mod.Find<ModProjectile>("DBJ").Type, damage*2, Item.knockBack, player.whoAmI);
 				}
 			}
@@ -129,7 +129,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 				int numberProjectiles = 2 + Main.rand.Next(2);
 				for (int i = 0; i < numberProjectiles; i++)
 				{
-					Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(15));
+					Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(15));
 					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, Mod.Find<ModProjectile>("DBB").Type, damage*2, Item.knockBack, player.whoAmI);
 				}
 			}

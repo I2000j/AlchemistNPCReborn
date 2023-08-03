@@ -45,7 +45,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			type = Mod.Find<ModProjectile>("SpiderFang").Type;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position, velocity, type, damage, Item.knockBack, player.whoAmI);
 			return false;
 		}
 	}

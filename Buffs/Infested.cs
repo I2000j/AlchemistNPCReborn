@@ -61,9 +61,10 @@ namespace AlchemistNPCReborn.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
 			if (!npc.boss)
 			{
-				if (ModLoader.GetMod("CalamityMod") == null)
+				if (Calamity == null)
 				{
 					if (npc.type != 222)
 					{	

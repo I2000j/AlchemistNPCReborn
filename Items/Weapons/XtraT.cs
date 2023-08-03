@@ -67,12 +67,10 @@ namespace AlchemistNPCReborn.Items.Weapons
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			float speedX = 10f;
-			float speedY = 10f;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+10, speedX, speedY, type, damage, knockback, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+10, velocity.X, velocity.Y, type, damage, knockback, player.whoAmI);
 			SoundEngine.PlaySound(SoundID.Item12, position);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, speedX, speedY, Mod.Find<ModProjectile>("ElectricBolt").Type, damage*3, knockback, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-10, speedX, speedY, type, damage, knockback, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, Mod.Find<ModProjectile>("ElectricBolt").Type, damage*3, knockback, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-10, velocity.X, velocity.Y, type, damage, knockback, player.whoAmI);
 			return false;
 		}
 	}

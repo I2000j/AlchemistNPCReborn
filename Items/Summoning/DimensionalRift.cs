@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -47,19 +47,18 @@ Don't break it!!!");
 			return !NPC.AnyNPCs(ModContent.NPCType<NPCs.BillCipher>());
 		}
 		
-		//public override void AddRecipes()
-		//{
-		//	ModRecipe recipe = new ModRecipe(mod);
-		//	recipe.AddIngredient(ModContent.ItemType("StrangeTopHat"));
-		//	recipe.AddIngredient(170, 10);
-		//	recipe.AddIngredient(ItemID.FragmentNebula, 15);
-        //    recipe.AddIngredient(ItemID.FragmentSolar, 15);
-		//	recipe.AddIngredient(ItemID.FragmentVortex, 15);
-		//	recipe.AddIngredient(ItemID.FragmentStardust, 15);
-		//	recipe.AddIngredient(ItemID.LunarBar, 10);
-		//	recipe.AddTile(TileID.LunarCraftingStation);
-		//	recipe.SetResult(this);
-		//	recipe.AddRecipe();
-		//}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(Mod.Find<ModItem>("StrangeTopHat").Type);
+			recipe.AddIngredient(170, 10);
+			recipe.AddIngredient(ItemID.FragmentNebula, 15);
+            recipe.AddIngredient(ItemID.FragmentSolar, 15);
+			recipe.AddIngredient(ItemID.FragmentVortex, 15);
+			recipe.AddIngredient(ItemID.FragmentStardust, 15);
+			recipe.AddIngredient(ItemID.LunarBar, 10);
+			recipe.AddTile(TileID.LunarCraftingStation);
+			recipe.Register();
+		}
 	}
 }

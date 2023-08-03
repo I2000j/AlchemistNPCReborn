@@ -31,10 +31,11 @@ namespace AlchemistNPCReborn.Projectiles
 
 		public override void AI()
 		{
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
 			Player player = Main.player[Projectile.owner];
 			for (int index1 = 0; index1 < 8 + player.extraAccessorySlots; ++index1)
 			{
-				if (ModLoader.GetMod("CalamityMod") != null)
+				if (Calamity != null)
 				{
 					//if (player.armor[index1].type == ModLoader.GetMod("CalamityMod").ItemType("PlagueHive"))
 					//{
@@ -52,7 +53,7 @@ namespace AlchemistNPCReborn.Projectiles
 					//	}
 					//}
 				}
-				if (ModLoader.GetMod("CalamityMod") == null)
+				if (Calamity == null)
 				{
 					if (player.armor[index1].type == 3333)
 					{
@@ -71,10 +72,11 @@ namespace AlchemistNPCReborn.Projectiles
 		
 		public override void ModifyHitNPC (NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
 			Player player = Main.player[Projectile.owner];
 			for (int index1 = 0; index1 < 8 + player.extraAccessorySlots; ++index1)
 			{
-				if (ModLoader.GetMod("CalamityMod") != null)
+				if (Calamity != null)
 				{
 					//if (player.armor[index1].type == ModLoader.GetMod("CalamityMod").ItemType("PlagueHive"))
 					//{
@@ -92,7 +94,7 @@ namespace AlchemistNPCReborn.Projectiles
 					//	}
 					//}
 				}
-				if (ModLoader.GetMod("CalamityMod") == null)
+				if (Calamity == null)
 				{
 					if (player.armor[index1].type == 3333)
 					{

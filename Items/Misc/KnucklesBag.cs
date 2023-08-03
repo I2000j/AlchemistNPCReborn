@@ -42,7 +42,7 @@ namespace AlchemistNPCReborn.Items.Misc
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.BreathOfTheVoid>()));
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.ChaosBomb>()));
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.UgandanTotem>()));
-			//((ILoot) (object) itemLoot).Add(ItemDropRule.Common(ModContent.ItemType<AutoinjectorMK2>()));
+			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(ModContent.ItemType<Items.Equippable.AutoinjectorMK2>()));
 			
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(ItemID.PlatinumCoin, 25));
 		}

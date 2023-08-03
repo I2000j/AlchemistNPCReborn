@@ -49,8 +49,8 @@ namespace AlchemistNPCReborn.Items.Weapons
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			type = Mod.Find<ModProjectile>("SharpNeedle").Type;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-25,25), position.Y+Main.rand.Next(-25,25), Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-50,50), position.Y+Main.rand.Next(-50,50), Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-25,25), position.Y+Main.rand.Next(-25,25), velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-50,50), position.Y+Main.rand.Next(-50,50), velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
 			return false;
 		}
 		

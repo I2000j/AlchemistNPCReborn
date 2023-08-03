@@ -15,9 +15,9 @@ namespace AlchemistNPCReborn.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Last Tantrum");
-			Tooltip.SetDefault("Shoots homing bullets that eradicate everything");
+			Tooltip.SetDefault("Shoots homing bullets that eradicate everything\nBullets cannot do critical damage");
 			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Последний Тантрум");
-			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Выстреливает самонаводящиеся пули, уничтожающие всё");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Выстреливает самонаводящиеся пули, уничтожающие всё\nПули не могут наносить критический урон");
 
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "最终之怒");
             Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "发射自动追踪、全元素伤害的子弹");
@@ -55,8 +55,8 @@ namespace AlchemistNPCReborn.Items.Weapons
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			type = Mod.Find<ModProjectile>("LastTantrum").Type;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-10,10), position.Y+3+Main.rand.Next(-3,3), Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-10,10), position.Y-3+Main.rand.Next(-3,3), Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-10,10), position.Y+3+Main.rand.Next(-3,3), velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-10,10), position.Y-3+Main.rand.Next(-3,3), velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
 			return false;
 		}
 	}

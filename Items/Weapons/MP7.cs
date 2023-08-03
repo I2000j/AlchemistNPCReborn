@@ -72,7 +72,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			int numberProjectiles = 1 + Main.rand.Next(3); // 4 or 5 shots
 			for (int i = 0; i < numberProjectiles; i++)
 			{
-				Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(3));
+				Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(3));
 				float scale = 1f - (Main.rand.NextFloat() * .4f);
 				perturbedSpeed = perturbedSpeed * scale; 
 				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);

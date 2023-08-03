@@ -78,16 +78,16 @@ namespace AlchemistNPCReborn.Items.Weapons
 			type = 335;
 			if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).ParadiseLost == true)
 			{
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-75,75), position.Y+Main.rand.Next(-75,75), Item.shootSpeed, Item.shootSpeed, type, damage, 3, player.whoAmI);
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-100,100), position.Y+Main.rand.Next(-100,100), Item.shootSpeed, Item.shootSpeed, type, damage, 3, player.whoAmI);
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-25,25), position.Y+Main.rand.Next(-25,25), Item.shootSpeed, Item.shootSpeed, type, damage/2, 3, player.whoAmI);
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-50,50), position.Y+Main.rand.Next(-50,50), Item.shootSpeed, Item.shootSpeed, type, damage/2, 3, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-75,75), position.Y+Main.rand.Next(-75,75), velocity.X, velocity.Y, type, damage, 3, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-100,100), position.Y+Main.rand.Next(-100,100), velocity.X, velocity.Y, type, damage, 3, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-25,25), position.Y+Main.rand.Next(-25,25), velocity.X, velocity.Y, type, damage/2, 3, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-50,50), position.Y+Main.rand.Next(-50,50), velocity.X, velocity.Y, type, damage/2, 3, player.whoAmI);
 			}
 			else
 			{
 				damage /= 2;
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-25,25), position.Y+Main.rand.Next(-25,25), Item.shootSpeed, Item.shootSpeed, type, damage/2, 3, player.whoAmI);
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-50,50), position.Y+Main.rand.Next(-50,50), Item.shootSpeed, Item.shootSpeed, type, damage/2, 3, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-25,25), position.Y+Main.rand.Next(-25,25), velocity.X, velocity.Y, type, damage/2, 3, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+Main.rand.Next(-50,50), position.Y+Main.rand.Next(-50,50), velocity.X, velocity.Y, type, damage/2, 3, player.whoAmI);
 			}
 			return true;
 		}

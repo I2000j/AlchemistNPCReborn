@@ -53,16 +53,13 @@ namespace AlchemistNPCReborn.Items.Weapons
 
 		public override bool CanUseItem(Player player)
 		{
-			Mod Calamity = ModLoader.GetMod("CalamityMod");
-			if(Calamity != null)
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
+			if (Calamity != null)
 			{
 				if ((bool)Calamity.Call("Downed", "profaned guardians"))
 				{
 					Item.damage = 120;
 				}
-			}
-			if (Calamity != null)
-			{
 				if ((bool)Calamity.Call("Downed", "providence"))
 				{
 					Item.damage = 150;

@@ -46,13 +46,13 @@ namespace AlchemistNPCReborn.Items.Weapons
 		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(10));
-			Vector2 perturbedSpeed2 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(10));
-			Vector2 perturbedSpeed3 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(10));
-			Vector2 perturbedSpeed4 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(15));
-			Vector2 perturbedSpeed5 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(15));
-			Vector2 perturbedSpeed6 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(20));
-			Vector2 perturbedSpeed7 = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(20));
+			Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(10));
+			Vector2 perturbedSpeed2 = velocity.RotatedByRandom(MathHelper.ToRadians(10));
+			Vector2 perturbedSpeed3 = velocity.RotatedByRandom(MathHelper.ToRadians(10));
+			Vector2 perturbedSpeed4 = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+			Vector2 perturbedSpeed5 = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+			Vector2 perturbedSpeed6 = velocity.RotatedByRandom(MathHelper.ToRadians(20));
+			Vector2 perturbedSpeed7 = velocity.RotatedByRandom(MathHelper.ToRadians(20));
 			Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
 			float speedX2 = perturbedSpeed2.X;
 			float speedY2 = perturbedSpeed2.Y;
@@ -67,7 +67,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			float speedX7 = perturbedSpeed7.X;
 			float speedY7 = perturbedSpeed7.Y;
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y+4, speedX2, speedY2, Mod.Find<ModProjectile>("ConeOfColdProjectile").Type, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, Item.shootSpeed, Item.shootSpeed, Mod.Find<ModProjectile>("ConeOfColdProjectile").Type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y, velocity.X, velocity.Y, Mod.Find<ModProjectile>("ConeOfColdProjectile").Type, damage, Item.knockBack, player.whoAmI);
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y-4, speedX3, speedY3, Mod.Find<ModProjectile>("ConeOfColdProjectile").Type, damage, Item.knockBack, player.whoAmI);
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y-8, speedX4, speedY4, Mod.Find<ModProjectile>("ConeOfColdProjectile").Type, damage, Item.knockBack, player.whoAmI);
 			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),vector.X, vector.Y+8, speedX5, speedY5, Mod.Find<ModProjectile>("ConeOfColdProjectile").Type, damage, Item.knockBack, player.whoAmI);

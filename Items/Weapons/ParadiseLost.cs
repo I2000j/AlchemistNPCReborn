@@ -93,11 +93,11 @@ namespace AlchemistNPCReborn.Items.Weapons
 				position = SPos;
 				if (player.direction == 1)
 				{
-					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+10, position.Y, Item.shootSpeed, Item.shootSpeed, Mod.Find<ModProjectile>("ParadiseLostProjectile").Type, damage, Item.knockBack, player.whoAmI);
+					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X+10, position.Y, velocity.X, velocity.Y, Mod.Find<ModProjectile>("ParadiseLostProjectile").Type, damage, Item.knockBack, player.whoAmI);
 				}
 				if (player.direction == -1)
 				{
-					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X-10, position.Y, Item.shootSpeed, Item.shootSpeed, Mod.Find<ModProjectile>("ParadiseLostProjectile").Type, damage, Item.knockBack, player.whoAmI);
+					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X-10, position.Y, velocity.X, velocity.Y, Mod.Find<ModProjectile>("ParadiseLostProjectile").Type, damage, Item.knockBack, player.whoAmI);
 				}
 			}
 			if (player.altFunctionUse == 2)

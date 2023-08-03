@@ -17,6 +17,7 @@ namespace AlchemistNPCReborn.Projectiles
 			DisplayName.SetDefault("Magic Bullet");     //The English name of the Projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+			Projectile.tileCollide = false;
 		}
 		
 		public override bool PreDraw(ref Color lightColor) {

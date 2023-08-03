@@ -45,8 +45,8 @@ namespace AlchemistNPCReborn.Items.Misc
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("GoldenKnuckles").Type));
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("WrathOfTheCelestial").Type));
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("LaserCannon").Type));
-			//((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("GrapplingHookGunItem").Type));
-			//((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("IlluminatiGift").Type));
+			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("GrapplingHookGunItem").Type));
+			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("IlluminatiGift").Type));
 			((ILoot) (object) itemLoot).Add(ItemDropRule.Common(Mod.Find<ModItem>("BillSoul").Type));
 			if (Main.rand.Next(5) == 0)
 			{

@@ -90,97 +90,112 @@ using Terraria.ModLoader.Default;
 using Terraria.ObjectData;
 using Terraria.UI.Chat;
 using Terraria.Utilities;
+using AlchemistNPCReborn.NPCs;
 
 namespace AlchemistNPCReborn
 {
     public class AlchemistNPCRebornPlayer : ModPlayer
     {
         public int Shield = 0;
+        public int Timer = 0;
+        public int fc = 0;
         public bool Barrage = false;
         public bool Blinker = false;
+        public bool BoomBox = false;
         public bool MasterYoyoBag = false;
         public bool TimeTwist = false;
         public bool HPJ = false;
         public bool DeltaRune = false;
+        public bool PB4K = false;
         public bool PH = false;
-        public bool ShieldBelt = false;
-        public bool TerrarianBlock = false;
-        public bool BoomBox = false;
         public bool DistantPotionsUse = false;
         public bool Voodoo = false;
+        public bool CursedMirror = false;
+        public bool ShieldBelt = false;
+        public bool MysticAmuletMount = false;
+        public bool TerrarianBlock = false;
         public bool Luck = false;
+        public bool Illuminati = false;
+        public bool AutoinjectorMK2 = false;
         public bool AlchemistCharmTier1 = false;
         public bool AlchemistCharmTier2 = false;
         public bool AlchemistCharmTier3 = false;
         public bool AlchemistCharmTier4 = false;
-        public bool Traps = false;
-        public bool ModPlayer = true;
-		public bool rainbowdust = false;
-        public bool Akumu = false;
-        public bool turret = false;
-        public bool BuffsKeep = false;
+        public bool BeeHeal = false;
+        public bool Pandora = false;
         public bool TS = false;
         public bool Symbiote = false;
-		public Vector2 spawnPosition;
-		
-		public bool CursedMirror = false;
-
-        public bool AllDamage10 = false;
-        public bool AllCrit10 = false;
-        public bool Defense8 = false;
-        public bool DR10 = false;
-        public bool Regeneration = false;
-        public bool Lifeforce = false;
-        public bool MS = false;
-		public bool Bewitched = false;
-		public bool Sharpen = false;
-		public bool Clairvoyance = false;
-		public bool AmmoBox = false;
-		public bool SugarRush = false;
-		public bool Lamps = false;
-		public bool MemersRiposte = false;
-        public bool MysticAmuletMount = false;
-        public bool GlobalTeleporter = false;
-        public bool GlobalTeleporterUp = false;
-
-        public bool LaetitiaGift = false;
-		
-		public bool DriedFish = false;
+        public bool Akumu = false;
+        public bool DriedFish = false;
         public bool SolarFish = false;
         public bool NebulaFish = false;
         public bool VortexFish = false;
         public bool StardustFish = false;
         public bool MiniShark = false;
         public bool Manna = false;
-
+        public bool Traps = false;
+        public bool Yui = false;
+        public bool YuiS = false;
+        public bool Extractor = false;
+        public bool Scroll = false;
+        public bool EyeOfJudgement = false;
+        public bool LaetitiaSet = false;
+        public bool LaetitiaGift = false;
         public bool SFU = false;
         public bool SF = false;
+        public bool PGSWear = false;
+        public bool RevSet = false;
+        public bool XtraT = false;
+        public bool BuffsKeep = false;
+        public bool MemersRiposte = false;
+        public bool ModPlayer = true;
+        public bool lf = false;
+        public bool GC = false;
+        public int lamp = 0;
+        public bool ParadiseLost = false;
+        public bool Rampage = false;
+        public bool LilithEmblem = false;
+        public bool trigger = true;
+        public bool turret = false;
+        public bool watchercrystal = false;
+        public bool devilsknife = false;
+        public bool uw = false;
+        public bool grimreaper = false;
+        public bool snatcher = false;
+        public bool sscope = false;
+        public bool lwm = false;
+        public bool DB = false;
+        public bool GlobalTeleporter = false;
+        public bool GlobalTeleporterUp = false;
+        public bool MeatGrinderOnUse = false;
 
-        public bool LaetitiaSet = false;
-		
-		private const int maxBillIsDowned = 1;
-		public int BillIsDowned = 0;
+        public bool AllDamage10 = false;
+        public bool AllCrit10 = false;
+        public bool Defense8 = false;
+        public bool DR10 = false;
+        public float EndurancePotDR = 0;
+        public bool Regeneration = false;
+        public bool Lifeforce = false;
+        public bool MS = false;
 
-        private const int maxKeepBuffs = 1;
-        public int KeepBuffs = 0;
-
-        private const int maxRCT1 = -1;
-        public int RCT1 = 0;
-        private const int maxRCT2 = -1;
-        public int RCT2 = 0;
-        private const int maxRCT3 = -1;
-        public int RCT3 = 0;
-        private const int maxRCT4 = -1;
-        public int RCT4 = 0;
-        private const int maxRCT5 = -1;
-        public int RCT5 = 0;
-        private const int maxRCT6 = -1;
-        public int RCT6 = 0;
+        public int DisasterGauge = 0;
+        public int chargetime = 0;
+        public int MeatGrinderUsetime = 0;
 
         private const int maxBBP = -1;
         public int BBP = 0;
         private const int maxSnatcherCounter = -1;
         public int SnatcherCounter = 0;
+        private const int maxLifeElixir = 2;
+        public int LifeElixir = 0;
+        private const int maxFuaran = 1;
+        public int Fuaran = 0;
+        private const int maxKeepBuffs = 1;
+        public int KeepBuffs = 0;
+        private const int maxWellFed = 1;
+        public int WellFed = 0;
+        private const int maxBillIsDowned = 1;
+		public int BillIsDowned = 0;
 
         private const int maxKingSlimeBooster = 1;
         public int KingSlimeBooster = 0;
@@ -229,42 +244,19 @@ namespace AlchemistNPCReborn
         private const int maxCultistBooster = 1;
         public int CultistBooster = 0;
         private const int maxMoonLordBooster = 1;
-        public int MoonLordBooster = 0;
-
-        private const int maxLifeElixir = 2;
-        public int LifeElixir = 0;
-		
-		public bool GC = false;
-		public bool BeeHeal = false;
-
-        public int lamp = 0;
-        public bool ParadiseLost = false;
-        public bool Rampage = false;
-        public bool LilithEmblem = false;
-        public bool trigger = true;
-        public bool watchercrystal = false;
-        public bool devilsknife = false;
-        public bool uw = false;
-        public bool grimreaper = false;
-        public bool snatcher = false;
-        public bool sscope = false;
-		public bool RevSet = false;
-        public bool lwm = false;
-        public bool DB = false;
-        public bool MeatGrinderOnUse = false;
-        public int DisasterGauge = 0;
-        public int chargetime = 0;
-        public int MeatGrinderUsetime = 0;
-
-        public bool PGSWear = false;
-        public bool XtraT = false;
-        public bool AutoinjectorMK2 = false;
-        public bool Illuminati = false;
-
-        public bool Yui = false;
-        public bool YuiS = false;
-        public bool Scroll = false;
-		
+        public int MoonLordBooster = 0;	
+        
+		public Vector2 spawnPosition; 
+        private DateTime now2;
+        
+		public bool Bewitched = false;
+		public bool Sharpen = false;
+		public bool Clairvoyance = false;
+		public bool AmmoBox = false;
+		public bool SugarRush = false;
+		public bool Lamps = false;
+        public bool rainbowdust = false;
+        
         public override void ResetEffects()
         {
             if (AlchemistNPCRebornWorld.foundAntiBuffMode)
@@ -275,62 +267,67 @@ namespace AlchemistNPCReborn
             {
                 Shield = 0;
             }
-            BoomBox = false;
-            DistantPotionsUse = false;
-            Luck = false;
-			CursedMirror = false;
-            AlchemistGlobalItem.Luck = false;
-            AlchemistGlobalItem.Luck2 = false;
-            AlchemistNPCReborn.GreaterDangersense = false;
-            AlchemistCharmTier1 = false;
-            AlchemistCharmTier2 = false;
-            AlchemistCharmTier3 = false;
-            AlchemistCharmTier4 = false;
-            Traps = false;
-            Akumu = false;
-            MysticAmuletMount = false;
-			snatcher = false;
-
-            LaetitiaSet = false;
-
-            AutoinjectorMK2 = false;
-
+            Item.potionDelay = 3600;
             Barrage = false;
             Blinker = false;
+            BoomBox = false;
             MasterYoyoBag = false;
             TimeTwist = false;
             HPJ = false;
             DeltaRune = false;
             PH = false;
+            PB4K = false;
+            DistantPotionsUse = false;
+            CursedMirror = false;
+            Voodoo = false;
             ShieldBelt = false;
+            MysticAmuletMount = false;
+            Luck = false;
             TerrarianBlock = false;
+            AlchemistGlobalItem.Luck = false;
+            AlchemistGlobalItem.Luck2 = false;
+            AlchemistGlobalItem.PerfectionToken = false;
+            AlchemistGlobalItem.Menacing = false;
+            AlchemistGlobalItem.Lucky = false;
+            AlchemistGlobalItem.Violent = false;
+            AlchemistGlobalItem.Warding = false; 
+            AlchemistNPCReborn.GreaterDangersense = false;
+            AlchemistNPCReborn.BastScroll = false;
+            AlchemistNPCReborn.Stormbreaker = false;
+            MeatGrinderOnUse = false;
+            AlchemistCharmTier1 = false;
+            AlchemistCharmTier2 = false;
+            AlchemistCharmTier3 = false;
+            AlchemistCharmTier4 = false;
+            Illuminati = false;
+            BeeHeal = false;
+            Pandora = false;
             TS = false;
             Symbiote = false;
-
+            DriedFish = false;
+            SolarFish = false;
+            NebulaFish = false;
+            VortexFish = false;
+            StardustFish = false;
+            MiniShark = false;
+            Manna = false;
+            Akumu = false;
+            AutoinjectorMK2 = false;
+            EyeOfJudgement = false;
+            LaetitiaSet = false;
+            LaetitiaGift = false;
+            Scroll = false;
             SFU = false;
             SF = false;
             XtraT = false;
-
-
-			rainbowdust = false;
-
-            AllDamage10 = false;
-            AllCrit10 = false;
-			RevSet = false;
-            Defense8 = false;
-            DR10 = false;
-            Regeneration = false;
-            Lifeforce = false;
-            MS = false;
-			Bewitched = false;
-			Sharpen = false;
-			Clairvoyance = false;
-			AmmoBox = false;
-			SugarRush = false;
-			Lamps = false;
-			MemersRiposte = false;
+            RevSet = false;
+            MemersRiposte = false;
+            PGSWear = false;
+            Extractor = false;
+            ParadiseLost = false;
+            Rampage = false;
+            LilithEmblem = false;
             turret = false;
-
             watchercrystal = false;
             devilsknife = false;
             uw = false;
@@ -338,35 +335,39 @@ namespace AlchemistNPCReborn
             snatcher = false;
             rainbowdust = false;
             sscope = false;
-
+            lwm = false;
             Yui = false;
             YuiS = false;
-
+            Traps = false;
             GlobalTeleporter = false;
             GlobalTeleporterUp = false;
-			
-			DriedFish = false;
-            SolarFish = false;
-            NebulaFish = false;
-            VortexFish = false;
-            StardustFish = false;
-            MiniShark = false;
-            Manna = false;
-
-            LaetitiaGift = false;
-            Illuminati = false;
-
-			BeeHeal = false;
-            PGSWear = false;
-            Scroll = false;
-            DeltaRune = false;
-
+            
+            AllDamage10 = false;
+            AllCrit10 = false;
+            Defense8 = false;
+            DR10 = false;
+            Regeneration = false;
+            Lifeforce = false;
+            MS = false;
+            
+			Bewitched = false;
+			Sharpen = false;
+			Clairvoyance = false;
+			AmmoBox = false;
+			SugarRush = false;
+			Lamps = false;
+            
             Player.statLifeMax2 += LifeElixir * 50;
+            Player.statManaMax2 += Fuaran * 100;
 
             if (KeepBuffs == 1)
             {
                 BuffsKeep = true;
-                //player.pStone = true;
+                Player.pStone = true;
+            }
+            if (WellFed == 1)
+            {
+                Player.AddBuff(BuffID.WellFed, 2);
             }
             if (KeepBuffs == 0)
             {
@@ -386,7 +387,6 @@ namespace AlchemistNPCReborn
                     ShopChangeUIM.visible = false;
                 }
             }
-
             if (Player.talkNPC == -1)
             {
                 for (int index1 = 0; index1 < 40; ++index1)
@@ -398,12 +398,28 @@ namespace AlchemistNPCReborn
                 }
             }
         }
-
-        
 		
 		public override void OnEnterWorld(Player player)
         {
-            spawnPosition = player.position;
+            now2 = DateTime.Now;
+        	if (now2.Month == 4)
+        	{
+        	  now2 = DateTime.Now;
+        	  if (now2.Day == 1)
+			  {
+				if (AlchemistNPCReborn.modConfiguration.GameError)
+                {
+                    ModLoader.TryGetMod("AlchemistNPCLite", out Mod Lite);
+                    if (Lite != null)
+                    {
+                        NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<NPCs.GameError>());
+			            ModGlobalNPC.geru = true;
+			            ModGlobalNPC.gr = 0;
+			            ModGlobalNPC.gu = false;
+                    }
+                }
+			  }
+			} 
         }
 		
         //public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
@@ -459,14 +475,6 @@ namespace AlchemistNPCReborn
             clone.KeepBuffs = KeepBuffs;
             clone.BillIsDowned = BillIsDowned;
 
-            clone.RCT1 = RCT1;
-            clone.RCT2 = RCT2;
-            clone.RCT3 = RCT3;
-            clone.RCT4 = RCT4;
-            clone.RCT5 = RCT5;
-            clone.RCT6 = RCT6;
-
-			
 			clone.KingSlimeBooster = KingSlimeBooster;
             clone.EyeOfCthulhuBooster = EyeOfCthulhuBooster;
             clone.EaterOfWorldsBooster = EaterOfWorldsBooster;

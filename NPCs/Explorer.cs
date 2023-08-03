@@ -370,7 +370,7 @@ namespace AlchemistNPCReborn.NPCs
 			{
 				return Entry8 + Main.npc[Operator].GivenName + Entry9;
 			}
-			Mod Calamity = ModLoader.GetMod("CalamityMod");
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
 			if(Calamity != null)
 			{
 				if ((bool)Calamity.Call("Downed", "dog") && Main.rand.Next(10) == 0)

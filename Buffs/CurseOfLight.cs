@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -61,15 +61,16 @@ namespace AlchemistNPCReborn.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
+			ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
 			npc.GetGlobalNPC<ModGlobalNPC>().light = true;
-			//if (ModLoader.GetMod("CalamityMod") != null)
-			//{
-			//	if (npc.type != 222 && npc.type != (ModLoader.GetMod("CalamityMod").NPCType("PlaguebringerGoliath")) && npc.type != (ModLoader.GetMod("CalamityMod").NPCType("PlaguebringerShade")) && npc.type != (ModLoader.GetMod("CalamityMod").NPCType("PlagueBeeLargeG")))
-			//	{	
-			//		npc.velocity *= 0.99f;
-			//	}
-			//}
-			if (ModLoader.GetMod("CalamityMod") == null)
+			if (Calamity != null)
+			{
+				if (npc.type != 222 && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlaguebringerGoliath").Type) && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlaguebringerShade").Type) && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlagueBeeLargeG").Type))
+				{	
+					npc.velocity *= 0.99f;
+				}
+			}
+			else
 			{
 				if (npc.type != 222)
 				{	

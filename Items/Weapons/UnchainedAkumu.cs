@@ -92,7 +92,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 			if (player.altFunctionUse != 2)
 			{
 			Item.noMelee = false;
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, Mod.Find<ModProjectile>("AkumuThrow").Type, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(source, position, velocity, Mod.Find<ModProjectile>("AkumuThrow").Type, damage, Item.knockBack, player.whoAmI);
 			}
 			if (player.altFunctionUse == 2)
 			{

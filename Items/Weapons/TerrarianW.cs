@@ -75,20 +75,20 @@ namespace AlchemistNPCReborn.Items.Weapons
 			{
 				if (player.altFunctionUse == 2)
 				{
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, type, damage*2, Item.knockBack, player.whoAmI);
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, type, damage*2, Item.knockBack, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, type, damage*2, Item.knockBack, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, type, damage*2, Item.knockBack, player.whoAmI);
 				}
 				else
 				{
-					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-6, Item.shootSpeed, Item.shootSpeed, type, damage*2, Item.knockBack, player.whoAmI);
-					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+6, Item.shootSpeed, Item.shootSpeed, type, damage*2, Item.knockBack, player.whoAmI);
+					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-6, velocity.X, velocity.Y, type, damage*2, Item.knockBack, player.whoAmI);
+					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+6, velocity.X, velocity.Y, type, damage*2, Item.knockBack, player.whoAmI);
 				}
 			}
 			if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).ParadiseLost == false)
 			{
 				if (player.altFunctionUse == 2)
 				{
-				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, type, damage, Item.knockBack, player.whoAmI);
+				Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, type, damage, Item.knockBack, player.whoAmI);
 				}
 				else
 				{

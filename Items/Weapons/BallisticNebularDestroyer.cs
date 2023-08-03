@@ -59,12 +59,11 @@ namespace AlchemistNPCReborn.Items.Weapons
 		
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-				int numberProjectiles = 3 + Main.rand.Next(2);
-				for (int i = 0; i < numberProjectiles; i++)
-					{
-					Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(15));
-					Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.VortexBeaterRocket, damage, Item.knockBack, player.whoAmI);
-					}
+			int numberProjectiles = 3 + Main.rand.Next(2);
+			for (int i = 0; i < numberProjectiles; i++)
+			{
+				Projectile.NewProjectile(source,position, velocity, ProjectileID.VortexBeaterRocket, damage, Item.knockBack, player.whoAmI);
+			}
 			return false;
 		}
 	}

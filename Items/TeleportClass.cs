@@ -73,6 +73,7 @@ namespace AlchemistNPCReborn.Items
                     HandleTempleTeleport(player, syncData);
                     break;
                 case 8:
+                    HandleBeaconTeleport(player, syncData);
                     break;
                 case 9:
                     HandleJungleTeleport(player, syncData);
@@ -110,6 +111,28 @@ namespace AlchemistNPCReborn.Items
             }
             else return;
         }
+
+        private static void HandleBeaconTeleport(Player player, bool syncData = false)
+		{
+            Mod mod = ModLoader.GetMod("AlchemistNPCReborn");
+			Vector2 prePos = player.position;
+			Vector2 pos = prePos;
+			for (int x = 0; x < Main.tile.Width; ++x)
+			{
+				for (int y = 0; y < Main.tile.Height; ++y)
+				{
+					if (Main.tile[x, y] == null) continue;
+					if (Main.tile[x, y].TileType != mod.Find<ModTile>("Beacon").Type) continue;
+					pos = new Vector2((x-1) * 16, (y-2) * 16);
+					break;
+				}
+			}
+			if (pos != prePos)
+			{
+				RunTeleport(player, new Vector2(pos.X, pos.Y), syncData, false);
+			}
+			else return;
+		}
 
         private static void HandleOceanTeleportLeft(Player player, bool syncData = false)
         {

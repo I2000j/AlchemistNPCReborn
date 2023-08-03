@@ -60,9 +60,9 @@ namespace AlchemistNPCReborn.Items.Weapons
 			(player.GetModPlayer<AlchemistNPCRebornPlayer>()).DisasterGauge++;
 			if (player.altFunctionUse != 2)
 			{
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+3+Main.rand.Next(-5,5), Item.shootSpeed, Item.shootSpeed, 638, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+Main.rand.Next(-5,5), Item.shootSpeed, Item.shootSpeed, 638, damage, Item.knockBack, player.whoAmI);
-			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-3+Main.rand.Next(-5,5), Item.shootSpeed, Item.shootSpeed, 638, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+3+Main.rand.Next(-5,5), velocity.X, velocity.Y, 638, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y+Main.rand.Next(-5,5), velocity.X, velocity.Y, 638, damage, Item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y-3+Main.rand.Next(-5,5), velocity.X, velocity.Y, 638, damage, Item.knockBack, player.whoAmI);
 			return false;
 			}
 			if (player.altFunctionUse == 2)

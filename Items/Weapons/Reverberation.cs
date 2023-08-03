@@ -72,7 +72,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 					int numberProjectiles = 2 + Main.rand.Next(3);
 					for (int i = 0; i < numberProjectiles; i++)
 						{
-						Vector2 perturbedSpeed = new Vector2(Item.shootSpeed, Item.shootSpeed).RotatedByRandom(MathHelper.ToRadians(20));
+						Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(20));
 						Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.CrystalLeafShot, damage/2, Item.knockBack, player.whoAmI);
 						player.statMana -= 4;
 						}
@@ -82,7 +82,7 @@ namespace AlchemistNPCReborn.Items.Weapons
 				{
 					if (Main.rand.Next(2) == 0 && player.statMana >= 30)
 						{
-						Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, Item.shootSpeed, Item.shootSpeed, ProjectileID.CrystalLeafShot, damage, Item.knockBack, player.whoAmI);
+						Projectile.NewProjectile(((Entity) player).GetSource_FromThis((string) null),position.X, position.Y, velocity.X, velocity.Y, ProjectileID.CrystalLeafShot, damage, Item.knockBack, player.whoAmI);
 						player.statMana -= 15;
 						}
 				}
