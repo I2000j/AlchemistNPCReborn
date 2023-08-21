@@ -67,8 +67,8 @@ namespace AlchemistNPCReborn.Interface
 			HealingUIPanel.OnMouseUp += new UIElement.MouseEvent(DragEnd);
 			
 			Mod mod = AlchemistNPCReborn.Instance;
-			Asset<Texture2D> Yes = ModContent.Request<Texture2D>("Interface/Yes");
-			Asset<Texture2D> No = ModContent.Request<Texture2D>("Interface/No");
+			Asset<Texture2D> Yes = ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/Yes");
+			Asset<Texture2D> No = ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/No");
 			//Texture2D Yes = mod.GetTexture("Interface/Yes");
 			//Texture2D No = mod.GetTexture("Interface/No");
 

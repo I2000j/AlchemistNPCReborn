@@ -1,7 +1,6 @@
 Fish Loot
 Some crafts is commented (Uncomment)
-PipBoy 3000 need to be added
-Dimesonal Casket UI and Dimesonal Casket fix + Dimesonal Casket in AlchemistGlobalItem
+Dimesonal Casket UI and Dimesonal Casket fix + Dimesonal Casket in AlchemistGlobalItem + dimesonal casket UI in World file
 5 lines in stat chekers
 Drainer
 Turret

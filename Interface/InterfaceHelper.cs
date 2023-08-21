@@ -63,9 +63,9 @@ namespace AlchemistNPCReborn.Interface
 		
 
 			float fill = Shield / 150;
-			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("Interface/ShieldBar").Value, new Vector2(anchorX, 64f), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("Interface/ShieldCharge").Value, new Vector2(anchorX + padding, 64f + padding), new Rectangle(0, 0, (int)(fill * chargeSize), chargeHeight), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("Interface/ShieldBarShield").Value, new Vector2(anchorX + padding, 64f + padding), new Rectangle(0, 0, (int)(fill * chargeSize), chargeHeight), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/ShieldBar").Value, new Vector2(anchorX, 64f), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/ShieldCharge").Value, new Vector2(anchorX + padding, 64f + padding), new Rectangle(0, 0, (int)(fill * chargeSize), chargeHeight), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/ShieldBarShield").Value, new Vector2(anchorX + padding, 64f + padding), new Rectangle(0, 0, (int)(fill * chargeSize), chargeHeight), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
 			return true;
 		}
@@ -99,8 +99,8 @@ namespace AlchemistNPCReborn.Interface
 			Main.spriteBatch.DrawString(font, chargeText, new Vector2(anchorX + barSize / 2 + maxTextSize.X / 2f, 42f), textColor, 0f, new Vector2(font.MeasureString(chargeText).X, 0f), 1f, SpriteEffects.None, 0f);
 
 			float fill = Gauge / 500;
-			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("Interface/DisasterBar").Value, new Vector2(anchorX, 64f), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("Interface/DisasterCharge").Value, new Vector2(anchorX + padding, 64f + padding), new Rectangle(0, 0, (int)(fill * chargeSize), chargeHeight), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/DisasterBar").Value, new Vector2(anchorX, 64f), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(ModContent.Request<Texture2D>("AlchemistNPCReborn/Interface/DisasterCharge").Value, new Vector2(anchorX + padding, 64f + padding), new Rectangle(0, 0, (int)(fill * chargeSize), chargeHeight), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
 			return true;
 		}

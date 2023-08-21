@@ -65,7 +65,7 @@ namespace AlchemistNPCReborn.Buffs
 			npc.GetGlobalNPC<ModGlobalNPC>().light = true;
 			if (Calamity != null)
 			{
-				if (npc.type != 222 && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlaguebringerGoliath").Type) && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlaguebringerShade").Type) && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlagueBeeLargeG").Type))
+				if (npc.type != 222 && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlaguebringerGoliath").Type) && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlaguebringerMiniboss").Type) && npc.type != (ModLoader.GetMod("CalamityMod").Find<ModNPC>("PlagueChargerLarge").Type))
 				{	
 					npc.velocity *= 0.99f;
 				}

@@ -30,22 +30,17 @@ namespace AlchemistNPCReborn
         public static Mod Instance;
         internal static AlchemistNPCReborn instance;
         internal static ModConfiguration modConfiguration;
+        public static ModKeybind LampLight;
         public static ModKeybind DiscordBuff;
         public static bool SF = false;
         public static bool GreaterDangersense = false;
-        public static int DTH = 0;
         public static bool BastScroll = false;
         public static bool Stormbreaker = false;
+        public static int DTH = 0;
         public static float ppx = 0f;
         public static float ppy = 0f;
         public static string GithubUserName { get { return "VVV101"; } }
         public static string GithubProjectName { get { return "AlchemistNPCReborn"; } }
-        public static int ReversivityCoinTier1ID;
-        public static int ReversivityCoinTier2ID;
-        public static int ReversivityCoinTier3ID;
-        public static int ReversivityCoinTier4ID;
-        public static int ReversivityCoinTier5ID;
-        public static int ReversivityCoinTier6ID;
         private UserInterface alchemistUserInterface;
         internal ShopChangeUI alchemistUI;
         private UserInterface alchemistUserInterfaceA;
@@ -54,14 +49,32 @@ namespace AlchemistNPCReborn
         internal ShopChangeUIO alchemistUIO;
         private UserInterface alchemistUserInterfaceM;
         internal ShopChangeUIM alchemistUIM;
+        private UserInterface alchemistUserInterfaceH;
+        internal HealingUI alchemistUIH;
+        private UserInterface alchemistUserInterfaceDC;
+        internal DimensionalCasketUI alchemistUIDC;
+
+        public static int ReversivityCoinTier1ID;
+        public static int ReversivityCoinTier2ID;
+        public static int ReversivityCoinTier3ID;
+        public static int ReversivityCoinTier4ID;
+        public static int ReversivityCoinTier5ID;
+        public static int ReversivityCoinTier6ID;
 
         public override void Load()
         {
             Instance = this;
+
             string DiscordBuffTeleportation = Language.GetTextValue("Discord Buff Teleportation");
+            string LampLightToggle = Language.GetTextValue("Lamp Light Toggle");
+            
             DiscordBuff = KeybindLoader.RegisterKeybind(this, DiscordBuffTeleportation, "Q");
-            SetTranslation();
+            LampLight = KeybindLoader.RegisterKeybind(this, LampLightToggle, "L");
+
             instance = this;
+
+            SetTranslation(); 
+
             if (!Main.dedServ)
             {
                 alchemistUI = new ShopChangeUI();
@@ -85,6 +98,10 @@ namespace AlchemistNPCReborn
                 alchemistUserInterfaceM.SetState(alchemistUIM);
 
             }
+            if (!Main.dedServ)
+            {
+                EquipLoader.AddEquipTexture(this, "AlchemistNPCReborn/Items/Armor/somebody0214Robe_Legs", EquipType.Legs, name: "somebody0214Robe_Legs");
+            }
             ReversivityCoinTier1ID = CustomCurrencyManager.RegisterCurrency(new ReversivityCoinTier1Data(ModContent.ItemType<Items.Misc.ReversivityCoinTier1>(), 999L));
             ReversivityCoinTier2ID = CustomCurrencyManager.RegisterCurrency(new ReversivityCoinTier2Data(ModContent.ItemType<Items.Misc.ReversivityCoinTier2>(), 999L));
             ReversivityCoinTier3ID = CustomCurrencyManager.RegisterCurrency(new ReversivityCoinTier3Data(ModContent.ItemType<Items.Misc.ReversivityCoinTier3>(), 999L));
@@ -106,7 +123,8 @@ namespace AlchemistNPCReborn
 				censusMod.Call("TownNPCCondition", NPCType<NPCs.Operator>(), "Defeat Eater of Worlds/Brain of Cthulhu");
 				censusMod.Call("TownNPCCondition", NPCType<NPCs.Musician>(), "Defeat Skeletron");
 				censusMod.Call("TownNPCCondition", NPCType<NPCs.YoungBrewer>(), "World state is Hardmode and both Alchemist and Operator are alive");
-                censusMod.Call("TownNPCCondition", NPCType<NPCs.Explorer>(), "Use strange book");
+                censusMod.Call("TownNPCCondition", NPCType<NPCs.OtherworldlyPortal>(), "Not exactly a Town NPC, one of the steps for saving the Explorer");
+                censusMod.Call("TownNPCCondition", NPCType<NPCs.Explorer>(), "Defeat Moon Lord and find the way to use all 9 Torn Notes for saving her");
 			}
 		}
 
@@ -114,6 +132,7 @@ namespace AlchemistNPCReborn
         {
             Instance = null;
             instance = null;
+            LampLight = null;
             DiscordBuff = null;
             modConfiguration = null;
         }

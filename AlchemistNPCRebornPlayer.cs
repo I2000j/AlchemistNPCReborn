@@ -184,6 +184,18 @@ namespace AlchemistNPCReborn
 
         private const int maxBBP = -1;
         public int BBP = 0;
+        private const int maxRCT1 = -1;
+        public int RCT1 = 0;
+        private const int maxRCT2 = -1;
+        public int RCT2 = 0;
+        private const int maxRCT3 = -1;
+        public int RCT3 = 0;
+        private const int maxRCT4 = -1;
+        public int RCT4 = 0;
+        private const int maxRCT5 = -1;
+        public int RCT5 = 0;
+        private const int maxRCT6 = -1;
+        public int RCT6 = 0;
         private const int maxSnatcherCounter = -1;
         public int SnatcherCounter = 0;
         private const int maxLifeElixir = 2;
@@ -430,9 +442,61 @@ namespace AlchemistNPCReborn
         //    IEnumerable<Item>.Add(item);
         //}
 		
+        public override void PostBuyItem(NPC vendor, Item[] shopInventory, Item item)
+        {
+            bool Casket = false;
+            for (int j = 0; j < Player.inventory.Length; j++)
+            {
+                if (Player.inventory[j].type == Mod.Find<ModItem>("DimensionalCasket").Type)
+                {
+                    Casket = true;
+                    break;
+                }
+            }
+            if (vendor.type == Mod.Find<ModNPC>("Operator").Type || Casket)
+            {
+                for (int index1 = 0; index1 < 40; ++index1)
+                {
+                    if (Player.bank3.item[index1].type == Mod.Find<ModItem>("ReversivityCoinTier1").Type)
+                    {
+                        RCT1 = Player.bank3.item[index1].stack;
+                        continue;
+                    }
+                    if (Player.bank3.item[index1].type == Mod.Find<ModItem>("ReversivityCoinTier2").Type)
+                    {
+                        RCT2 = Player.bank3.item[index1].stack;
+                        continue;
+                    }
+                    if (Player.bank3.item[index1].type == Mod.Find<ModItem>("ReversivityCoinTier3").Type)
+                    {
+                        RCT3 = Player.bank3.item[index1].stack;
+                        continue;
+                    }
+                    if (Player.bank3.item[index1].type == Mod.Find<ModItem>("ReversivityCoinTier4").Type)
+                    {
+                        RCT4 = Player.bank3.item[index1].stack;
+                        continue;
+                    }
+                    if (Player.bank3.item[index1].type == Mod.Find<ModItem>("ReversivityCoinTier5").Type)
+                    {
+                        RCT5 = Player.bank3.item[index1].stack;
+                        continue;
+                    }
+                    if (Player.bank3.item[index1].type == Mod.Find<ModItem>("ReversivityCoinTier6").Type)
+                    {
+                        RCT6 = Player.bank3.item[index1].stack;
+                        break;
+                    }
+                }
+            }
+        }
         
 		public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
+            if (SnatcherCounter >= 12500 && Player.HasBuff(Mod.Find<ModBuff>("Snatcher").Type))
+            {
+                Projectile.NewProjectile(((Entity) this.Player).GetSource_FromThis((string) null), target.Center.X, target.Center.Y, 0f, 0f, Mod.Find<ModProjectile>("Returner2").Type, damage * 10, 0, Player.whoAmI);
+            }
             if (Player.HasBuff(ModContent.BuffType<Buffs.GuarantCrit>()) && crit)
             {
                 damage *= 2;
@@ -472,6 +536,13 @@ namespace AlchemistNPCReborn
         public override void clientClone(ModPlayer clientClone)
         {
             AlchemistNPCRebornPlayer clone = clientClone as AlchemistNPCRebornPlayer;
+            clone.RCT1 = RCT1;
+            clone.RCT2 = RCT2;
+            clone.RCT3 = RCT3;
+            clone.RCT4 = RCT4;
+            clone.RCT5 = RCT5;
+            clone.RCT6 = RCT6;
+            
             clone.KeepBuffs = KeepBuffs;
             clone.BillIsDowned = BillIsDowned;
 
@@ -500,8 +571,8 @@ namespace AlchemistNPCReborn
             clone.CultistBooster = CultistBooster;
             clone.MoonLordBooster = MoonLordBooster;
             
-            //clone.BBP = BBP;
-            //clone.SnatcherCounter = SnatcherCounter;
+            clone.BBP = BBP;
+            clone.SnatcherCounter = SnatcherCounter;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -533,7 +604,9 @@ namespace AlchemistNPCReborn
                 FishronBooster != clone.FishronBooster ||
                 MartianSaucerBooster != clone.MartianSaucerBooster||
                 CultistBooster != clone.CultistBooster||
-                MoonLordBooster != clone.MoonLordBooster)
+                MoonLordBooster != clone.MoonLordBooster || 
+                BBP != clone.BBP ||
+                SnatcherCounter != clone.SnatcherCounter)
                 
 
 				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
@@ -550,6 +623,13 @@ namespace AlchemistNPCReborn
             List<string> boosts = new List<string>();
             AddToList(boosts, "KeepBuffs", KeepBuffs);
             AddToList(boosts, "BillIsDowned", BillIsDowned);
+            //AddToList(boosts, "RCT1", RCT1);
+            //AddToList(boosts, "RCT2", RCT2);
+            //AddToList(boosts, "RCT3", RCT3);
+            //AddToList(boosts, "RCT4", RCT4);
+            //AddToList(boosts, "RCT5", RCT5);
+            //AddToList(boosts, "RCT6", RCT6);
+            //AddToList(boosts, "BBP", BBP);
             AddToList(boosts, "KingSlimeBooster", KingSlimeBooster);
             AddToList(boosts, "EyeOfCthulhuBooster", EyeOfCthulhuBooster);
             AddToList(boosts, "EaterOfWorldsBooster", EaterOfWorldsBooster);
@@ -576,6 +656,11 @@ namespace AlchemistNPCReborn
             AddToList(boosts, "MoonLordBooster", MoonLordBooster);
 
             tag["boosts"] = (object) boosts;
+
+            List<string> snatcherC = new List<string>();
+            snatcherC.Add(SnatcherCounter.ToString());
+
+            tag["snatcherC"] = (object) snatcherC;
             
         }
 
@@ -660,6 +745,15 @@ namespace AlchemistNPCReborn
             if (boosts.Contains("MoonLordBooster")){
                 MoonLordBooster = 1;
             }
+
+            IList<string> snatcherC = tag.GetList<string>("snatcherC");
+            for (int i = 0; i < 9999; i++)
+            {
+                if(snatcherC.Contains(i.ToString()))
+                {
+                    SnatcherCounter = i;
+                }
+            }
         }
 
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
@@ -742,13 +836,13 @@ namespace AlchemistNPCReborn
                 minishark.stack = 1;
                 rewardItems.Add(minishark);
             }
-            //if (Manna)
-            //{
-            //    Item manna = new Item();
-            //    manna.SetDefaults(ModContent.ItemType<Items.Materials.MannafromHeaven>());
-            //    manna.stack = 1;
-            //    rewardItems.Add(manna);
-            //}
+            if (Manna)
+            {
+                Item manna = new Item();
+                manna.SetDefaults(ModContent.ItemType<Items.Misc.MannafromHeaven>());
+                manna.stack = 1;
+                rewardItems.Add(manna);
+            }
         }
 		
         public override void UpdateEquips()

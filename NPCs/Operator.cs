@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
@@ -1052,6 +1052,64 @@ namespace AlchemistNPCReborn.NPCs
 
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
+            bool T1 = false;
+            bool T2 = false;
+            bool T3 = false;
+            bool T4 = false;
+            bool T5 = false;
+            bool T6 = false;
+            for (int k = 0; k < 255; k++)
+            {
+                Player player = Main.player[k];
+                if (player.active && player == Main.LocalPlayer)
+                {
+                    for (int index1 = 0; index1 < 40; ++index1)
+                    {
+                        if (player.bank3.item[index1].stack == 0 && !T1)
+                        {
+                            player.bank3.item[index1].SetDefaults(Mod.Find<ModItem>("ReversivityCoinTier1").Type);
+                            player.bank3.item[index1].stack = player.GetModPlayer<AlchemistNPCRebornPlayer>().RCT1;
+                            T1 = true;
+                            continue;
+                        }
+                        if (player.bank3.item[index1].stack == 0 && !T2)
+                        {
+                            player.bank3.item[index1].SetDefaults(Mod.Find<ModItem>("ReversivityCoinTier2").Type);
+                            player.bank3.item[index1].stack = player.GetModPlayer<AlchemistNPCRebornPlayer>().RCT2;
+                            T2 = true;
+                            continue;
+                        }
+                        if (player.bank3.item[index1].stack == 0 && !T3)
+                        {
+                            player.bank3.item[index1].SetDefaults(Mod.Find<ModItem>("ReversivityCoinTier3").Type);
+                            player.bank3.item[index1].stack = player.GetModPlayer<AlchemistNPCRebornPlayer>().RCT3;
+                            T3 = true;
+                            continue;
+                        }
+                        if (player.bank3.item[index1].stack == 0 && !T4)
+                        {
+                            player.bank3.item[index1].SetDefaults(Mod.Find<ModItem>("ReversivityCoinTier4").Type);
+                            player.bank3.item[index1].stack = player.GetModPlayer<AlchemistNPCRebornPlayer>().RCT4;
+                            T4 = true;
+                            continue;
+                        }
+                        if (player.bank3.item[index1].stack == 0 && !T5)
+                        {
+                            player.bank3.item[index1].SetDefaults(Mod.Find<ModItem>("ReversivityCoinTier5").Type);
+                            player.bank3.item[index1].stack = player.GetModPlayer<AlchemistNPCRebornPlayer>().RCT5;
+                            T5 = true;
+                            continue;
+                        }
+                        if (player.bank3.item[index1].stack == 0 && !T6)
+                        {
+                            player.bank3.item[index1].SetDefaults(Mod.Find<ModItem>("ReversivityCoinTier6").Type);
+                            player.bank3.item[index1].stack = player.GetModPlayer<AlchemistNPCRebornPlayer>().RCT6;
+                            T6 = true;
+                            break;
+                        }
+                    }
+                }
+            }
             ModLoader.TryGetMod("CalamityMod", out Mod Calamity);
             if (Shop1)
             {

@@ -78,6 +78,22 @@ namespace AlchemistNPCReborn.NPCs
             }
         }
 
+		public void SyncPlayerVariables(Player player)
+		{
+			AlchemistNPCRebornPlayer modPlayer = player.GetModPlayer<AlchemistNPCRebornPlayer>();
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)player.whoAmI);
+			packet.Write(modPlayer.RCT1);
+			packet.Write(modPlayer.RCT2);
+			packet.Write(modPlayer.RCT3);
+			packet.Write(modPlayer.RCT4);
+			packet.Write(modPlayer.RCT5);
+			packet.Write(modPlayer.RCT6);
+			packet.Write(modPlayer.BBP);
+			packet.Write(modPlayer.SnatcherCounter);
+			packet.Send();
+		}
+
         public override void ResetEffects(NPC npc)
 		{
 			banned = false;
@@ -898,6 +914,24 @@ namespace AlchemistNPCReborn.NPCs
 			{
 				source = npc.GetSource_FromAI();
 				Item.NewItem(source, (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
+			}
+			if (player.HasBuff(Mod.Find<ModBuff>("Snatcher").Type) && !npc.friendly && npc.type != 14 && npc.type != 135 && !npc.SpawnedFromStatue && npc.type != 1 && npc.type != 535)
+			{
+				if (ModLoader.GetMod("Redemption") != null)
+				{
+					if (npc.type != ModLoader.GetMod("Redemption").Find<ModNPC>("OozeBlob").Type) 
+					{
+						player.GetModPlayer<AlchemistNPCRebornPlayer>().SnatcherCounter++;
+						if (Main.netMode == 2)
+						SyncPlayerVariables(player);
+					}
+				}
+				if (ModLoader.GetMod("Redemption") == null)
+				{
+					player.GetModPlayer<AlchemistNPCRebornPlayer>().SnatcherCounter++;
+					if (Main.netMode == 2)
+					SyncPlayerVariables(player);
+				}
 			}
 
 			if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).Extractor && npc.boss == true && npc.lifeMax >= 50000 && (Main.rand.Next(3) == 0))
