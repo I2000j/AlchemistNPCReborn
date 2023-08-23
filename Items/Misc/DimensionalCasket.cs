@@ -39,12 +39,12 @@ namespace AlchemistNPCReborn.Items.Misc
 			Item.expert = true;
 		}
 		
-		public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
+		public override bool? UseItem(Player player)
 		{
 			if (Main.myPlayer == player.whoAmI)
 			{
 				//DimensionalCasketUI.visible = true;
-				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("I'm sorry, but I do not know how to fix this item. It will be done later."), new Color(255, 255, 255));
+		
 			}
 			return true;
 		}
@@ -64,7 +64,7 @@ namespace AlchemistNPCReborn.Items.Misc
 			if (Main.myPlayer == player.whoAmI)
 			{
 				//DimensionalCasketUI.visible = true;
-				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("I'm sorry, but I do not know how to fix this item. It will be done later."), new Color(255, 255, 255));
+			
 			}
 		}
 		

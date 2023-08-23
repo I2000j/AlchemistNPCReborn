@@ -63,11 +63,11 @@ namespace AlchemistNPCReborn.Items.Weapons
 			}
 			Vector2 SPos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			position = SPos;
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Minions.Turret>()] < player.maxTurrets)
-			{
-				return true;
-			}
-			return false;
+			//if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Minions.Turret>()] < player.maxTurrets)
+			//{
+			//	return true;
+			//}
+			return true;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 Hey! This is reborn of 1.3 Alchemist NPC. (This mod does not apply to the Lite version, it is recommended to use them separately)
 The author of the mod is not responsible for any damage to your saves - due to the fact that the mod is still in pre-release!
 
-Original mod by @AlchemistNPC Team, used open source code. Ported by @SecretYT (aka Secretik)
+Original mod by @AlchemistNPC Team, used open source code. Ported by @Secretik (aka SecretYT)
 
 AlchemistNPC Discord: https://discord.gg/WGKyKun
 For other information, support you can join my discord server: https://discord.gg/ssPQfAVXkD

@@ -28,12 +28,6 @@ namespace AlchemistNPCReborn.NPCs
                 return "AlchemistNPCReborn/NPCs/Musician";
             }
         }
-        //Probably removed
-        // public override bool Autoload(ref string name)
-        // {
-        // 	name = "Musician";
-        // 	return true;
-        // }
 
         public override void SetStaticDefaults()
         {
@@ -355,16 +349,13 @@ namespace AlchemistNPCReborn.NPCs
             {
                 return EntryM12 + Main.npc[Clothier].GivenName + EntryM13;
             }
-            // IMPLEMENT WHEN WEAKREFERENCES FIXED
-            /*
-            if (ModLoader.GetMod("ThoriumMod") != null)
+            if (ModLoader.TryGetMod("ThoriumMod", out Mod Thorium) != null)
             {
             	if (Main.rand.Next(15) == 0)
             	{
             	    return EntryM18;
             	}
             }
-            */
             if (ModLoader.TryGetMod("CalamityModMusic", out Mod CalamityMusic))
             {
             	if (Main.rand.Next(15) == 0)

@@ -41,6 +41,11 @@ namespace AlchemistNPCReborn.Interface
 
         public override void OnInitialize()
         {
+
+            //Shop 21
+            ModLoader.TryGetMod("CalamityMod", out Mod CalamityMod);
+            //Shop 3
+            ModLoader.TryGetMod("ThoriumMod", out Mod ThoriumMod);
 			
             BrewerShopsPanel = new UIPanel();
             BrewerShopsPanel.SetPadding(0);
@@ -53,7 +58,7 @@ namespace AlchemistNPCReborn.Interface
             BrewerShopsPanel.OnMouseDown += new UIElement.MouseEvent(DragStart);
             BrewerShopsPanel.OnMouseUp += new UIElement.MouseEvent(DragEnd);
 
-            UIText text = new UIText("Vanila");
+            UIText text = new UIText("Vanilla");
             text.Left.Set(35, 0f);
             text.Top.Set(10, 0f);
             text.Width.Set(60, 0f);
@@ -67,19 +72,25 @@ namespace AlchemistNPCReborn.Interface
             text2.Height.Set(22, 0f);
             BrewerShopsPanel.Append(text2);
 
-            UIText text21 = new UIText("CalamityMod");
-            text21.Left.Set(35, 0f);
-            text21.Top.Set(70, 0f);
-            text21.Width.Set(100, 0f);
-            text21.Height.Set(22, 0f);
-            BrewerShopsPanel.Append(text21);
+            if (CalamityMod != null)
+            {
+                UIText text21 = new UIText("CalamityMod");
+                text21.Left.Set(35, 0f);
+                text21.Top.Set(70, 0f);
+                text21.Width.Set(100, 0f);
+                text21.Height.Set(22, 0f);
+                BrewerShopsPanel.Append(text21);
+            }
 
-            UIText text3 = new UIText("ThoriumMod");
-            text3.Left.Set(35, 0f);
-            text3.Top.Set(100, 0f);
-            text3.Width.Set(70, 0f);
-            text3.Height.Set(22, 0f);
-            BrewerShopsPanel.Append(text3);
+            if (ThoriumMod != null)
+            {
+                UIText text3 = new UIText("ThoriumMod");
+                text3.Left.Set(35, 0f);
+                text3.Top.Set(100, 0f);
+                text3.Width.Set(70, 0f);
+                text3.Height.Set(22, 0f);
+                BrewerShopsPanel.Append(text3);
+            }
 
             Asset<Texture2D> buttonPlayTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay");
             UIImageButton playButton = new UIImageButton(buttonPlayTexture);
@@ -98,29 +109,28 @@ namespace AlchemistNPCReborn.Interface
             playButton2.OnClick += new MouseEvent(PlayButtonClicked2);
             BrewerShopsPanel.Append(playButton2);
 			
-			//Shop 21
-            ModLoader.TryGetMod("CalamityMod", out Mod CalamityMod);
-            //Shop 3
-            ModLoader.TryGetMod("ThoriumMod", out Mod ThoriumMod);
 			
-			if (CalamityMod != null){
-            UIImageButton playButton21 = new UIImageButton(buttonPlayTexture);
-            playButton21.Left.Set(10, 0f);
-            playButton21.Top.Set(70, 0f);
-            playButton21.Width.Set(22, 0f);
-            playButton21.Height.Set(22, 0f);
-            playButton21.OnClick += new MouseEvent(PlayButtonClicked21);
-            BrewerShopsPanel.Append(playButton21);
+			
+			if (CalamityMod != null)
+            {
+                UIImageButton playButton21 = new UIImageButton(buttonPlayTexture);
+                playButton21.Left.Set(10, 0f);
+                playButton21.Top.Set(70, 0f);
+                playButton21.Width.Set(22, 0f);
+                playButton21.Height.Set(22, 0f);
+                playButton21.OnClick += new MouseEvent(PlayButtonClicked21);
+                BrewerShopsPanel.Append(playButton21);
 			}
 			
-			if (ThoriumMod != null){
-            UIImageButton playButton3 = new UIImageButton(buttonPlayTexture);
-            playButton3.Left.Set(10, 0f);
-            playButton3.Top.Set(100, 0f);
-            playButton3.Width.Set(22, 0f);
-            playButton3.Height.Set(22, 0f);
-            playButton3.OnClick += new MouseEvent(PlayButtonClicked3);
-            BrewerShopsPanel.Append(playButton3);
+			if (ThoriumMod != null)
+            {
+                UIImageButton playButton3 = new UIImageButton(buttonPlayTexture);
+                playButton3.Left.Set(10, 0f);
+                playButton3.Top.Set(100, 0f);
+                playButton3.Width.Set(22, 0f);
+                playButton3.Height.Set(22, 0f);
+                playButton3.OnClick += new MouseEvent(PlayButtonClicked3);
+                BrewerShopsPanel.Append(playButton3);
 			}
 
             Asset<Texture2D> buttonDeleteTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonDelete");

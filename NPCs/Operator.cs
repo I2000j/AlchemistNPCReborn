@@ -19,8 +19,11 @@ namespace AlchemistNPCReborn.NPCs
     [AutoloadHead]
     public class Operator : ModNPC
     {
+        public static bool OA = false;
+        public static bool Meteor = false;
         public static bool Shop1 = true;
         public static bool Shop2 = false;
+        public static bool egoShop = false;
         public static bool Shop3 = false;
         public static bool Shop4 = false;
         public static bool Shop5 = false;
@@ -32,12 +35,6 @@ namespace AlchemistNPCReborn.NPCs
                 return "AlchemistNPCReborn/NPCs/Operator";
             }
         }
-        //Possibly Removed
-        // public override bool Autoload(ref string name)
-        // {
-        // 	name = "Operator";
-        // 	return true;
-        // }
 
         public override void SetStaticDefaults()
         {
@@ -317,6 +314,12 @@ namespace AlchemistNPCReborn.NPCs
             AnimationType = NPCID.Steampunker;
         }
 
+        public override void ResetEffects()
+        {
+            OA = false;
+            Meteor = false;
+        }
+
         public override bool CanTownNPCSpawn(int numTownNPCs, int money)
         {
             if (NPC.downedBoss2 && AlchemistNPCReborn.modConfiguration.OperatorSpawn)
@@ -324,6 +327,23 @@ namespace AlchemistNPCReborn.NPCs
                 return true;
             }
             return false;
+        }
+
+        public override bool CheckConditions(int left, int right, int top, int bottom)
+        {
+            int score = 0;
+            for (int x = left; x <= right; x++)
+            {
+                for (int y = top; y <= bottom; y++)
+                {
+                    int type = Main.tile[x, y].TileType;
+                    if (type == Mod.Find<ModTile>("WingoftheWorld").Type)
+                    {
+                        score++;
+                    }
+                }
+            }
+            return score > 0;
         }
 
         public override List<string> SetNPCNameList()
@@ -365,17 +385,15 @@ namespace AlchemistNPCReborn.NPCs
             attackDelay = 10;
             if (!Main.hardMode)
             {
-                projType = 14;
+                projType = Mod.Find<ModProjectile>("BB").Type;
             }
             if (Main.hardMode && !NPC.downedMoonlord)
             {
-                attackDelay = 10;
-                projType = 279;
+                projType = Mod.Find<ModProjectile>("FDB").Type;
             }
             if (NPC.downedMoonlord)
             {
-                attackDelay = 4;
-                projType = 638;
+                projType = Mod.Find<ModProjectile>("MB").Type;
             }
         }
 
@@ -385,15 +403,15 @@ namespace AlchemistNPCReborn.NPCs
             closeness = 20;
             if (!Main.hardMode)
             {
-                item = ItemID.FlintlockPistol;
+                item = Mod.Find<ModItem>("TheBeak").Type;
             }
             if (Main.hardMode && !NPC.downedMoonlord)
             {
-                item = ItemID.Shotgun;
+                item = Mod.Find<ModItem>("FuneralofDeadButterflies").Type;
             }
             if (NPC.downedMoonlord)
             {
-                item = ItemID.VortexBeater;
+                item = Mod.Find<ModItem>("MagicBullet").Type;
             }
         }
 
@@ -507,9 +525,8 @@ namespace AlchemistNPCReborn.NPCs
             		return EntryO18;
             	} 
             }
-            // IMPLEMENT WHEN WEAKREFERENCES FIXED
-            /*
-            if (ModLoader.GetMod("ThoriumMod") != null)
+            ModLoader.TryGetMod("ThoriumMod", out Mod Thorium);
+            if (Thorium != null)
             {
             	if (Main.rand.Next(6) == 0)
             	{
@@ -517,14 +534,13 @@ namespace AlchemistNPCReborn.NPCs
 
             	} 
             }
-            if (ModLoader.GetMod("ThoriumMod") != null && Main.hardMode)
+            if (Thorium != null && Main.hardMode)
             {
             	if (Main.rand.Next(6) == 0)
             	{
             	return EntryO6;
             	}
             }
-            */
             if (Main.rand.Next(5) == 0 && Main.hardMode)
             {
                 switch (Main.rand.Next(2))
@@ -623,6 +639,7 @@ namespace AlchemistNPCReborn.NPCs
 
         public override void SetChatButtons(ref string button, ref string button2)
         {
+            string EGOShop = Language.GetTextValue("Mods.AlchemistNPCReborn.EGOShop");
             string BossDropsShop = Language.GetTextValue("Mods.AlchemistNPCReborn.BossDropsShop");
             string BossDropsModsShop = Language.GetTextValue("Mods.AlchemistNPCReborn.BossDropsModsShop");
             string VanillaTreasureBagsShop = Language.GetTextValue("Mods.AlchemistNPCReborn.VanillaTreasureBagsShop");
@@ -630,7 +647,21 @@ namespace AlchemistNPCReborn.NPCs
             string ModdedTreasureBagsShop2 = Language.GetTextValue("Mods.AlchemistNPCReborn.ModdedTreasureBagsShop2");
             string ModdedTreasureBagsShop3 = Language.GetTextValue("Mods.AlchemistNPCReborn.ModdedTreasureBagsShop3");
             string ShopChanger = Language.GetTextValue("Mods.AlchemistNPCReborn.ShopChanger");
+            string Meteorite = Language.GetTextValue("Mods.AlchemistNPCReborn.Meteorite");
             button = BossDropsShop;
+
+            Player player = Main.player[Main.myPlayer];
+            if (player.active)
+            {
+                for (int j = 0; j < player.inventory.Length; j++)
+                {
+                    if (player.inventory[j].type == Mod.Find<ModItem>("SymbioteMeteorite").Type)
+                    {
+                        Meteor = true;
+                    }
+                }
+            }
+
             if (!Main.expertMode)
             {
                 button2 = BossDropsModsShop;
@@ -646,6 +677,10 @@ namespace AlchemistNPCReborn.NPCs
             if (Shop2)
             {
                 button = BossDropsModsShop;
+            }
+            if (egoShop)
+            {
+                button = EGOShop;
             }
             if (Shop3)
             {
@@ -669,6 +704,24 @@ namespace AlchemistNPCReborn.NPCs
         {
             if (firstButton)
             {
+                if (Meteor)
+                {
+                    Player player = Main.player[Main.myPlayer];
+                    var source = NPC.GetSource_FromAI();
+                    player.QuickSpawnItem(source, Mod.Find<ModItem>("Symbiote").Type);
+                    if (Main.player[Main.myPlayer].HasItem(Mod.Find<ModItem>("SymbioteMeteorite").Type) && Meteor)
+                    {
+                        Item[] inventory = Main.player[Main.myPlayer].inventory;
+                        for (int k = 0; k < inventory.Length; k++)
+                        {
+                            if (inventory[k].type == Mod.Find<ModItem>("SymbioteMeteorite").Type && Meteor)
+                            {
+                                inventory[k].stack--;
+                                Meteor = false;
+                            }
+                        }
+                    }
+                }
                 if (!Main.expertMode)
                 {
                     Shop1 = true;
@@ -1264,6 +1317,15 @@ namespace AlchemistNPCReborn.NPCs
                 	}
                 }
 				*/
+                if (NPC.downedMechBossAny)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("DivineLava").Type);
+                    shop.item[nextSlot].shopCustomPrice = 20000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("CursedIce").Type);
+                    shop.item[nextSlot].shopCustomPrice = 20000;
+                    nextSlot++;
+                }
                 if (Calamity != null)
                 {
                     if ((bool)Calamity.Call("Downed", "hive mind"))
@@ -1347,6 +1409,127 @@ namespace AlchemistNPCReborn.NPCs
                     {
                         addModItemToShop(Calamity, "DarksunFragment", 150000, ref shop, ref nextSlot);
                     }
+                }
+            }
+            if (egoShop)
+            {
+                if (AlchemistNPCReborn.modConfiguration.CoinsDrop && Main.hardMode)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("WorldControlUnit").Type);
+                    shop.item[nextSlot].shopCustomPrice = new int?(30);
+                    shop.item[nextSlot].shopSpecialCurrency = AlchemistNPCReborn.ReversivityCoinTier3ID;
+                    nextSlot++;
+                }
+                if (!AlchemistNPCReborn.modConfiguration.CoinsDrop && NPC.downedMechBossAny)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("WorldControlUnit").Type);
+                    shop.item[nextSlot].shopCustomPrice = 2000000;
+                    nextSlot++;
+                }
+                if (NPC.downedMoonlord)
+                {
+                    if (AlchemistNPCReborn.modConfiguration.CoinsDrop)
+                    {
+                        shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("TerrainReformer").Type);
+                        shop.item[nextSlot].shopCustomPrice = new int?(30);
+                        shop.item[nextSlot].shopSpecialCurrency = AlchemistNPCReborn.ReversivityCoinTier4ID;
+                        nextSlot++;
+                    }
+                    if (!AlchemistNPCReborn.modConfiguration.CoinsDrop)
+                    {
+                        shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("TerrainReformer").Type);
+                        shop.item[nextSlot].shopCustomPrice = 5000000;
+                        nextSlot++;
+                    }
+                }
+                shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorSnow").Type);
+                shop.item[nextSlot].shopCustomPrice = 250000;
+                nextSlot++;
+                shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorDesert").Type);
+                shop.item[nextSlot].shopCustomPrice = 250000;
+                nextSlot++;
+                shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorJungle").Type);
+                shop.item[nextSlot].shopCustomPrice = 250000;
+                nextSlot++;
+                shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorCorruption").Type);
+                shop.item[nextSlot].shopCustomPrice = 250000;
+                nextSlot++;
+                shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorCrimson").Type);
+                shop.item[nextSlot].shopCustomPrice = 250000;
+                nextSlot++;
+                shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorSpace").Type);
+                shop.item[nextSlot].shopCustomPrice = 250000;
+                nextSlot++;
+                if (NPC.downedBoss3)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorDungeon").Type);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (Main.hardMode)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("HoloprojectorHallowed").Type);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("GlobalTeleporter").Type);
+                    nextSlot++;
+                }
+                if (NPC.downedBoss3)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("TheBeak").Type);
+                    shop.item[nextSlot].shopCustomPrice = 200000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("LaetitiaRibbon").Type);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("LaetitiaCoat").Type);
+                    shop.item[nextSlot].shopCustomPrice = 200000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("LaetitiaLeggings").Type);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("Laetitia").Type);
+                    shop.item[nextSlot].shopCustomPrice = 350000;
+                    nextSlot++;
+                }
+                if (NPC.downedMechBossAny)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("FuneralofDeadButterflies").Type);
+                    shop.item[nextSlot].shopCustomPrice = 500000;
+                    nextSlot++;
+                }
+                if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("LaetitiaGift").Type);
+                    shop.item[nextSlot].shopCustomPrice = 300000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("ReverberationHead").Type);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("ReverberationBody").Type);
+                    shop.item[nextSlot].shopCustomPrice = 350000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("ReverberationLegs").Type);
+                    shop.item[nextSlot].shopCustomPrice = 300000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("Reverberation").Type);
+                    shop.item[nextSlot].shopCustomPrice = 500000;
+                    nextSlot++;
+                }
+                if (NPC.downedPlantBoss)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("BigBirdLamp").Type);
+                    shop.item[nextSlot].shopCustomPrice = 750000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("GrinderMK4").Type);
+                    shop.item[nextSlot].shopCustomPrice = 750000;
+                    nextSlot++;
+                }
+                if (NPC.downedGolemBoss)
+                {
+                    shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").Find<ModItem>("Spore").Type);
+                    shop.item[nextSlot].shopCustomPrice = 1000000;
+                    nextSlot++;
                 }
             }
             if (Shop3)

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -951,23 +951,23 @@ namespace AlchemistNPCReborn.NPCs
  
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
-		//shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPCReborn").ItemType("ExplorersBrew"));
-		//shop.item[nextSlot].shopCustomPrice = 250000;
-        //nextSlot++;
+		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.ExplorersBrew>());
+		shop.item[nextSlot].shopCustomPrice = 250000;
+        nextSlot++;
 		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.PerfectDiscordPotion>());
 		shop.item[nextSlot].shopCustomPrice = 330000;
         nextSlot++;
-		//shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPCReborn").ItemType("GlobalTeleporterUp"));
-        //nextSlot++;
-		//shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").ItemType("ChromaticCrystal"));
-		//shop.item[nextSlot].shopCustomPrice = 500000;
-		//nextSlot++;
-		//shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").ItemType("NyctosythiaCrystal"));
-		//shop.item[nextSlot].shopCustomPrice = 500000;
-		//nextSlot++;	
-		//shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AlchemistNPCReborn").ItemType("SunkroveraCrystal"));
-		//shop.item[nextSlot].shopCustomPrice = 500000;
-		//nextSlot++;	
+		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.GlobalTeleporterUp>());
+        nextSlot++;
+		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.ChromaticCrystal>());
+		shop.item[nextSlot].shopCustomPrice = 500000;
+		nextSlot++;
+		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.NyctosythiaCrystal>());
+		shop.item[nextSlot].shopCustomPrice = 500000;
+		nextSlot++;	
+		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.SunkroveraCrystal>());
+		shop.item[nextSlot].shopCustomPrice = 500000;
+		nextSlot++;	
 		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Notes.ResearchNote1>());
         nextSlot++;
 		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Notes.ResearchNote2>());
@@ -989,31 +989,30 @@ namespace AlchemistNPCReborn.NPCs
 		{
 			for (int j = 0; j < player.inventory.Length; j++)
 			{
-				if (player.inventory[j].type == ModContent.ItemType<Items.Weapons.QuantumDestabilizer>())
+				if (player.inventory[j].type == Mod.Find<ModItem>("QuantumDestabilizer").Type)
 				{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.EnergyCell>());
 				nextSlot++;
 				}
-				//if (player.inventory[j].type == mod.ItemType("Tritantrum"))
-				//{
-				//shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPCReborn").ItemType("PlasmaRound"));
-				//nextSlot++;
-				//}
-				//if (player.inventory[j].type == mod.ItemType("ChaingunMeatGrinder"))
-				//{
-				//shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPCReborn").ItemType("MGB"));
-				//nextSlot++;
-				//}
-				//if (player.inventory[j].type == mod.ItemType("PortalGun") || player.inventory[j].type == mod.ItemType("OverloadedPortalGun"))
-				if (player.inventory[j].type == ModContent.ItemType<Items.Weapons.PortalGun>())
+				if (player.inventory[j].type == Mod.Find<ModItem>("Tritantrum").Type)
+				{
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.PlasmaRound>());
+					nextSlot++;
+				}
+				if (player.inventory[j].type == Mod.Find<ModItem>("ChaingunMeatGrinder").Type)
+				{
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.MGB>());
+					nextSlot++;
+				}
+				if (player.inventory[j].type == Mod.Find<ModItem>("PortalGun").Type || player.inventory[j].type == Mod.Find<ModItem>("OverloadedPortalGun").Type)
 				{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.EnergyCapsule>());
 				nextSlot++;
 				}
 			}
 		}
-		//shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPCReborn").ItemType("RealityPiercer"));
-        //nextSlot++;
+		shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Summoning.RealityPiercer>());
+        nextSlot++;
 		}
 	}
 }

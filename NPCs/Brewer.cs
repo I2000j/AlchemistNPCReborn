@@ -31,12 +31,6 @@ namespace AlchemistNPCReborn.NPCs
                 return "AlchemistNPCReborn/NPCs/Brewer";
             }
         }
-        // Probably removed
-        // public override bool Autoload(ref string name)
-        // {
-        // 	name = "Brewer";
-        // 	return true;
-        // }
 
         public override void SetStaticDefaults()
         {

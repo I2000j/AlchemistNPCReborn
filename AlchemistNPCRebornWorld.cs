@@ -103,6 +103,8 @@ namespace AlchemistNPCReborn
         public static bool downedSandElemental;
         public static bool foundAntiBuffMode;
         public static bool foundFlyingCarpet;
+		public static bool foundDivingHelmet;
+		public static bool foundPMirror;
         private UserInterface alchemistUserInterface;
         internal ShopChangeUI alchemistUI;
         private UserInterface alchemistUserInterfaceA;
@@ -111,6 +113,8 @@ namespace AlchemistNPCReborn
         internal ShopChangeUIO alchemistUIO;
         private UserInterface alchemistUserInterfaceM;
         internal ShopChangeUIM alchemistUIM;
+		private UserInterface alchemistUserInterfaceT;
+        internal ShopChangeUIT alchemistUIT;
         private UserInterface alchemistUserInterfaceH;
         internal HealingUI alchemistUIH;
         private UserInterface alchemistUserInterfaceDC;
@@ -195,6 +199,8 @@ namespace AlchemistNPCReborn
 			foundPHD = false;
 			foundAntiBuffMode = false;
 			foundFlyingCarpet = false;
+			foundDivingHelmet = false;
+			foundPMirror = false;
             downedDOGIceQueen = false;
             downedDOGPumpking = false;
             downedSandElemental = false;
@@ -219,6 +225,11 @@ namespace AlchemistNPCReborn
                 alchemistUIM.Activate();
                 alchemistUserInterfaceM = new UserInterface();
                 alchemistUserInterfaceM.SetState(alchemistUIM);
+
+				alchemistUIT = new ShopChangeUIT();
+                alchemistUIT.Activate();
+                alchemistUserInterfaceT = new UserInterface();
+                alchemistUserInterfaceT.SetState(alchemistUIT);
 
                 alchemistUIH = new HealingUI();
                 alchemistUIH.Activate();
@@ -314,6 +325,8 @@ namespace AlchemistNPCReborn
 			foundPHD = found.Contains("PHD");
 			foundAntiBuffMode = found.Contains("AntiBuffMode");
 			foundFlyingCarpet = found.Contains("FlyingCarpet");
+			foundDivingHelmet = found.Contains("DivingHelmet");
+			foundPMirror = found.Contains("PMirror");
         }
 
         public override void SaveWorldData(TagCompound tag)
@@ -402,7 +415,9 @@ namespace AlchemistNPCReborn
 			if (foundPHD) found.Add("PHD");
 			if (foundAntiBuffMode) found.Add("AntiBuffMode");
 			if (foundFlyingCarpet) found.Add("FlyingCarpet");
-            
+			if (foundDivingHelmet) found.Add("DivingHelmet");
+            if (foundPMirror) found.Add("PMirror");
+
             tag["found"] = found;
         }
 
@@ -511,6 +526,8 @@ namespace AlchemistNPCReborn
 			flags10[0] = foundPHD;
 			flags10[1] = foundAntiBuffMode;
 			flags10[2] = foundFlyingCarpet;
+			flags10[3] = foundDivingHelmet;
+			flags10[4] = foundPMirror;
 			writer.Write(flags10);
 
             BitsByte flags11 = new BitsByte();
@@ -616,6 +633,8 @@ namespace AlchemistNPCReborn
 			foundPHD = flags10[0];
 			foundAntiBuffMode = flags10[1];
 			foundFlyingCarpet = flags10[2];
+			foundDivingHelmet = flags10[3];
+			foundDivingHelmet = flags10[4];
 
             BitsByte flags11 = reader.ReadByte();
             downedDOGPumpking = flags11[0];
@@ -629,7 +648,7 @@ namespace AlchemistNPCReborn
             if (MouseTextIndex != -1)
             {
                 layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
-                    "AlchemistNPC: Shop Selector",
+                    "AlchemistNPCReborn: Shop Selector",
                     delegate
                     {
                         if (ShopChangeUI.visible)
@@ -645,7 +664,7 @@ namespace AlchemistNPCReborn
             if (MouseTextIndexA != -1)
             {
                 layers.Insert(MouseTextIndexA, new LegacyGameInterfaceLayer(
-                    "AlchemistNPC: Shop Selector A",
+                    "AlchemistNPCReborn: Shop Selector A",
                     delegate
                     {
                         if (ShopChangeUIA.visible)
@@ -661,7 +680,7 @@ namespace AlchemistNPCReborn
             if (MouseTextIndexO != -1)
             {
                 layers.Insert(MouseTextIndexO, new LegacyGameInterfaceLayer(
-                    "AlchemistNPC: Shop Selector O",
+                    "AlchemistNPCReborn: Shop Selector O",
                     delegate
                     {
                         if (ShopChangeUIO.visible)
@@ -673,11 +692,27 @@ namespace AlchemistNPCReborn
                     InterfaceScaleType.UI)
                 );
             }
+			int MouseTextIndexT = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (MouseTextIndexT != -1)
+            {
+                layers.Insert(MouseTextIndexT, new LegacyGameInterfaceLayer(
+                    "AlchemistNPCReborn: Shop Selector T",
+                    delegate
+                    {
+                        if (ShopChangeUIT.visible)
+                        {
+                            alchemistUIT.Draw(Main.spriteBatch);
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+            }
             int MouseTextIndexM = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (MouseTextIndexM != -1)
             {
                 layers.Insert(MouseTextIndexM, new LegacyGameInterfaceLayer(
-                    "AlchemistNPC: Shop Selector M",
+                    "AlchemistNPCReborn: Shop Selector M",
                     delegate
                     {
                         if (ShopChangeUIM.visible)
@@ -693,7 +728,7 @@ namespace AlchemistNPCReborn
             if (MouseTextIndexH != -1)
             {
                 layers.Insert(MouseTextIndexH, new LegacyGameInterfaceLayer(
-                    "AlchemistNPC: Healing UI",
+                    "AlchemistNPCReborn: Healing UI",
                     delegate
                     {
                         if (HealingUI.visible)
@@ -705,6 +740,7 @@ namespace AlchemistNPCReborn
                     InterfaceScaleType.UI)
                 );
             }
+			
             //int MouseTextIndexDC = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             //if (MouseTextIndexDC != -1)
             //{
@@ -753,7 +789,7 @@ namespace AlchemistNPCReborn
                            }
                        }
                        return true;
-                   }, InterfaceScaleType.Game)// Maybe this is problem solver |Game -> UI|
+                   }, InterfaceScaleType.Game)
                );
             }
         }
@@ -772,6 +808,11 @@ namespace AlchemistNPCReborn
             if (alchemistUserInterfaceO != null && ShopChangeUIO.visible)
             {
                 alchemistUserInterfaceO.Update(gameTime);
+            }
+
+			if (alchemistUserInterfaceT != null && ShopChangeUIT.visible)
+            {
+                alchemistUserInterfaceT.Update(gameTime);
             }
 
             if (alchemistUserInterfaceM != null && ShopChangeUIM.visible)

@@ -30,7 +30,7 @@ namespace AlchemistNPCReborn.Interface
             OperatorShopsPanel.Left.Set(575f, 0f);
             OperatorShopsPanel.Top.Set(275f, 0f);
             OperatorShopsPanel.Width.Set(300f, 0f);
-            OperatorShopsPanel.Height.Set(190f, 0f);
+            OperatorShopsPanel.Height.Set(250f, 0f);
             OperatorShopsPanel.BackgroundColor = new Color(73, 94, 171);
 
             OperatorShopsPanel.OnMouseDown += new UIElement.MouseEvent(DragStart);
@@ -50,33 +50,40 @@ namespace AlchemistNPCReborn.Interface
             text1.Height.Set(22, 0f);
             OperatorShopsPanel.Append(text1);
 
-            UIText text2 = new UIText("Vanilla Treasure Bags");
+            UIText text2 = new UIText("EGO Shop");
             text2.Left.Set(35, 0f);
             text2.Top.Set(70, 0f);
             text2.Width.Set(70, 0f);
             text2.Height.Set(22, 0f);
             OperatorShopsPanel.Append(text2);
 
-            UIText text3 = new UIText("Modded Treasure Bags #1");
+            UIText text3 = new UIText("Vanilla Treasure Bags");
             text3.Left.Set(35, 0f);
             text3.Top.Set(100, 0f);
-            text3.Width.Set(120, 0f);
+            text3.Width.Set(70, 0f);
             text3.Height.Set(22, 0f);
             OperatorShopsPanel.Append(text3);
 
-            UIText text4 = new UIText("Modded Treasure Bags #2");
+            UIText text4 = new UIText("Modded Treasure Bags #1");
             text4.Left.Set(35, 0f);
             text4.Top.Set(130, 0f);
             text4.Width.Set(120, 0f);
             text4.Height.Set(22, 0f);
             OperatorShopsPanel.Append(text4);
 
-            UIText text5 = new UIText("Modded Treasure Bags #3");
+            UIText text5 = new UIText("Modded Treasure Bags #2");
             text5.Left.Set(35, 0f);
             text5.Top.Set(160, 0f);
             text5.Width.Set(120, 0f);
             text5.Height.Set(22, 0f);
             OperatorShopsPanel.Append(text5);
+
+            UIText text6 = new UIText("Modded Treasure Bags #3");
+            text6.Left.Set(35, 0f);
+            text6.Top.Set(190, 0f);
+            text6.Width.Set(120, 0f);
+            text6.Height.Set(22, 0f);
+            OperatorShopsPanel.Append(text6);
 
             Asset<Texture2D> buttonPlayTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay");
             UIImageButton playButton = new UIImageButton(buttonPlayTexture);
@@ -98,29 +105,36 @@ namespace AlchemistNPCReborn.Interface
             playButton2.Top.Set(70, 0f);
             playButton2.Width.Set(22, 0f);
             playButton2.Height.Set(22, 0f);
-            playButton2.OnClick += new MouseEvent(PlayButtonClicked2);
+            playButton2.OnClick += new MouseEvent(PlayButtonClicked9);
             OperatorShopsPanel.Append(playButton2);
             UIImageButton playButton3 = new UIImageButton(buttonPlayTexture);
             playButton3.Left.Set(10, 0f);
             playButton3.Top.Set(100, 0f);
             playButton3.Width.Set(22, 0f);
             playButton3.Height.Set(22, 0f);
-            playButton3.OnClick += new MouseEvent(PlayButtonClicked3);
+            playButton3.OnClick += new MouseEvent(PlayButtonClicked2);
             OperatorShopsPanel.Append(playButton3);
             UIImageButton playButton4 = new UIImageButton(buttonPlayTexture);
             playButton4.Left.Set(10, 0f);
             playButton4.Top.Set(130, 0f);
             playButton4.Width.Set(22, 0f);
             playButton4.Height.Set(22, 0f);
-            playButton4.OnClick += new MouseEvent(PlayButtonClicked4);
+            playButton4.OnClick += new MouseEvent(PlayButtonClicked3);
             OperatorShopsPanel.Append(playButton4);
             UIImageButton playButton5 = new UIImageButton(buttonPlayTexture);
             playButton5.Left.Set(10, 0f);
             playButton5.Top.Set(160, 0f);
             playButton5.Width.Set(22, 0f);
             playButton5.Height.Set(22, 0f);
-            playButton5.OnClick += new MouseEvent(PlayButtonClicked5);
+            playButton5.OnClick += new MouseEvent(PlayButtonClicked4);
             OperatorShopsPanel.Append(playButton5);
+            UIImageButton playButton6 = new UIImageButton(buttonPlayTexture);
+            playButton6.Left.Set(10, 0f);
+            playButton6.Top.Set(190, 0f);
+            playButton6.Width.Set(22, 0f);
+            playButton6.Height.Set(22, 0f);
+            playButton6.OnClick += new MouseEvent(PlayButtonClicked5);
+            OperatorShopsPanel.Append(playButton6);
 
             Asset<Texture2D> buttonDeleteTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonDelete");
             UIImageButton closeButton = new UIImageButton(buttonDeleteTexture);
@@ -139,6 +153,7 @@ namespace AlchemistNPCReborn.Interface
             {
                 Operator.Shop1 = true;
                 Operator.Shop2 = false;
+                Operator.egoShop = false;
                 Operator.Shop3 = false;
                 Operator.Shop4 = false;
                 Operator.Shop5 = false;
@@ -158,6 +173,27 @@ namespace AlchemistNPCReborn.Interface
             {
                 Operator.Shop1 = false;
                 Operator.Shop2 = true;
+                Operator.egoShop = false;
+                Operator.Shop3 = false;
+                Operator.Shop4 = false;
+                Operator.Shop5 = false;
+                Operator.Shop6 = false;
+                NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+                ShopChangeUIO.visible = false;
+                Main.playerInventory = true;
+                Main.npcChatText = "";
+                Main.SetNPCShopIndex(Main.MaxShopIDs - 1);
+                Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+            }
+        }
+
+        private void PlayButtonClicked9(UIMouseEvent evt, UIElement listeningElement)
+        {
+            if (Main.GameUpdateCount - timeStart >= AlchemistNPCReborn.modConfiguration.ShopChangeDelay)
+            {
+                Operator.Shop1 = false;
+                Operator.Shop2 = false;
+                Operator.egoShop = true;
                 Operator.Shop3 = false;
                 Operator.Shop4 = false;
                 Operator.Shop5 = false;
@@ -177,6 +213,7 @@ namespace AlchemistNPCReborn.Interface
             {
                 Operator.Shop1 = false;
                 Operator.Shop2 = false;
+                Operator.egoShop = false;
                 Operator.Shop3 = true;
                 Operator.Shop4 = false;
                 Operator.Shop5 = false;
@@ -196,6 +233,7 @@ namespace AlchemistNPCReborn.Interface
             {
                 Operator.Shop1 = false;
                 Operator.Shop2 = false;
+                Operator.egoShop = false;
                 Operator.Shop3 = false;
                 Operator.Shop4 = true;
                 Operator.Shop5 = false;
@@ -215,6 +253,7 @@ namespace AlchemistNPCReborn.Interface
             {
                 Operator.Shop1 = false;
                 Operator.Shop2 = false;
+                Operator.egoShop = false;
                 Operator.Shop3 = false;
                 Operator.Shop4 = false;
                 Operator.Shop5 = true;
@@ -234,6 +273,7 @@ namespace AlchemistNPCReborn.Interface
             {
                 Operator.Shop1 = false;
                 Operator.Shop2 = false;
+                Operator.egoShop = false;
                 Operator.Shop3 = false;
                 Operator.Shop4 = false;
                 Operator.Shop5 = false;

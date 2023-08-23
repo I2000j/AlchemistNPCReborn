@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -14,12 +14,16 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
+using AlchemistNPCReborn.Interface;
  
 namespace AlchemistNPCReborn.NPCs
 {
 	[AutoloadHead]
 	public class Tinkerer : ModNPC
 	{
+		public static bool TubePresent = false;
+        public static bool TubePresent2 = false;
+        public static bool TubePresent3 = false;
 		public static int Shop = 1;
 		public override string Texture
 		{
@@ -28,12 +32,6 @@ namespace AlchemistNPCReborn.NPCs
 				return "AlchemistNPCReborn/NPCs/Tinkerer";
 			}
 		}
-		//Possibly Removed
-		// public override bool Autoload(ref string name)
-		// {
-		// 	name = "Tinkerer";
-		// 	return AlchemistNPCReborn.modConfiguration.TinkererSpawn;
-		// }
 
 		public override void SetStaticDefaults()
 		{
@@ -57,11 +55,15 @@ namespace AlchemistNPCReborn.NPCs
             text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Пётр");
             LocalizationLoader.AddTranslation(text);
 			text = LocalizationLoader.CreateTranslation(Mod, "TinkererButton1");
-            text.SetDefault("Movement/Misc");
+            text.SetDefault("Sell");
             text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "出售");
             LocalizationLoader.AddTranslation(text);
 			text = LocalizationLoader.CreateTranslation(Mod, "TinkererButton2");
-            text.SetDefault("Combat");
+            text.SetDefault("Shop");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "商店");
+            LocalizationLoader.AddTranslation(text);
+			text = LocalizationLoader.CreateTranslation(Mod, "TinkererButton3");
+            text.SetDefault("Reward");
             text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "商店");
             LocalizationLoader.AddTranslation(text);
             text = LocalizationLoader.CreateTranslation(Mod, "EntryT1");
@@ -89,6 +91,21 @@ namespace AlchemistNPCReborn.NPCs
             text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Никогда не знаешь, где ты можешь заполучить что-то действительно редкое или ценное. Поэтому исследуй каждый доступный угол со всем возможным терпением.");
             text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "你永远不会知道在哪里可以得到真正珍贵的东西. 所以耐心探索每一个可能的角落吧.");
             LocalizationLoader.AddTranslation(text);
+			text = LocalizationLoader.CreateTranslation(Mod, "EntryT6");
+            text.SetDefault("If you wil collect every single blueprint, I will give you the special reward.");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Если ты соберешь все до единого чертежи, я выдам тебе специальную награду.");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "如果你能收集每一张蓝图, 我会给你一个特别的奖励.");
+            LocalizationLoader.AddTranslation(text);
+
+            text = LocalizationLoader.CreateTranslation(Mod, "TubePresentChat1");
+            text.SetDefault("You don't have any Paper Tubes for selling right now. Go and get some!");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "你没有任何可以递给我的蓝图纸管. 去弄些来!");
+            LocalizationLoader.AddTranslation(text);
+            text = LocalizationLoader.CreateTranslation(Mod, "TubePresentChat2");
+            text.SetDefault("Here is some money, take it.");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "这里, 钱, 拿着");
+            LocalizationLoader.AddTranslation(text);
+
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
             {
                 Velocity = -1f,
@@ -128,6 +145,13 @@ namespace AlchemistNPCReborn.NPCs
             NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Merchant;
 		}
+
+		public override void ResetEffects()
+        {
+            TubePresent = false;
+            TubePresent2 = false;
+            TubePresent3 = false;
+        }
 		
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
@@ -202,341 +226,572 @@ namespace AlchemistNPCReborn.NPCs
  
         public override void SetChatButtons(ref string button, ref string button2)
         {
-            button = Language.GetTextValue("Mods.AlchemistNPCReborn.TinkererButton1");
-			button2 = Language.GetTextValue("Mods.AlchemistNPCReborn.TinkererButton2");
+            if (AlchemistNPCRebornWorld.foundT1 || AlchemistNPCRebornWorld.foundT2 || AlchemistNPCRebornWorld.foundT3)
+            {
+                button = Language.GetTextValue("Mods.AlchemistNPCReborn.TinkererButton1");
+            }
+            button2 = Language.GetTextValue("Mods.AlchemistNPCReborn.TinkererButton2");
+            Player player = Main.player[Main.myPlayer];
+            if (player.active)
+            {
+                for (int j = 0; j < player.inventory.Length; j++)
+                {
+                    if (player.inventory[j].type == Mod.Find<ModItem>("PaperTube").Type)
+                    {
+                        TubePresent = true;
+                    }
+                    if (player.inventory[j].type == Mod.Find<ModItem>("PaperTube2").Type)
+                    {
+                        TubePresent2 = true;
+                    }
+                    if (player.inventory[j].type == Mod.Find<ModItem>("PaperTube3").Type)
+                    {
+                        TubePresent3 = true;
+                    }
+                }
+            }
+            if (NPC.downedMoonlord && !AlchemistNPCRebornWorld.foundMP7 && AlchemistNPCRebornWorld.foundT1 && AlchemistNPCRebornWorld.foundT2 && AlchemistNPCRebornWorld.foundT3)
+            {
+                button = Language.GetTextValue("Mods.AlchemistNPCReborn.TinkererButton3");
+            }
         }
  
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
         {
             if (firstButton)
             {
-				Shop = 1;
-				shop = true;
-			}
-			else
-			{
-				Shop = 2;
-				shop = true;
-			}
-		}
+                if (!TubePresent && !TubePresent2 && !TubePresent3)
+                {
+                    Main.npcChatText = Language.GetTextValue("Mods.AlchemistNPCReborn.TubePresentChat1");
+                }
+                if (NPC.downedMoonlord && !AlchemistNPCRebornWorld.foundMP7 && AlchemistNPCRebornWorld.foundT1 && AlchemistNPCRebornWorld.foundT2 && AlchemistNPCRebornWorld.foundT3)
+                {
+                    for (int k = 0; k < 255; k++)
+                    {
+                        Player player = Main.player[k];
+                        if (player.active)
+                        {
+							var source = Main.player[Main.myPlayer].GetSource_FromAI();
+                            player.QuickSpawnItem(source, Mod.Find<ModItem>("MP7").Type);
+                        }
+                    }
+                }
+                else if (AlchemistNPCRebornWorld.foundT1 || AlchemistNPCRebornWorld.foundT2 || AlchemistNPCRebornWorld.foundT3)
+                {
+                    Item[] inventory = Main.player[Main.myPlayer].inventory;
+                    for (int k = 0; k < inventory.Length; k++)
+                    {
+                        if (TubePresent && AlchemistNPCRebornWorld.foundT1)
+                        {
+                            if (inventory[k].type == Mod.Find<ModItem>("PaperTube").Type && inventory[k].stack > 0)
+                            {
+                                TubePresent = false;
+                                TubePresent2 = false;
+                                TubePresent3 = false;
+                                inventory[k].stack--;
+								var source = Main.player[Main.myPlayer].GetSource_FromAI();
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.npcChatText = Language.GetTextValue("Mods.AlchemistNPCReborn.TubePresentChat2");
+                            }
+                        }
+                        else if (TubePresent2 && AlchemistNPCRebornWorld.foundT2)
+                        {
+                            if (inventory[k].type == Mod.Find<ModItem>("PaperTube2").Type && inventory[k].stack > 0)
+                            {
+                                TubePresent = false;
+                                TubePresent2 = false;
+                                TubePresent3 = false;
+                                inventory[k].stack--;
+								var source = Main.player[Main.myPlayer].GetSource_FromAI();
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.npcChatText = Language.GetTextValue("Mods.AlchemistNPCReborn.TubePresentChat2");
+                            }
+                        }
+                        else if (TubePresent3 && AlchemistNPCRebornWorld.foundT3)
+                        {
+                            if (inventory[k].type == Mod.Find<ModItem>("PaperTube3").Type && inventory[k].stack > 0)
+                            {
+                                TubePresent = false;
+                                TubePresent2 = false;
+                                TubePresent3 = false;
+                                inventory[k].stack--;
+								var source = Main.player[Main.myPlayer].GetSource_FromAI();
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.player[Main.myPlayer].QuickSpawnItem(source, ItemID.GoldCoin);
+                                Main.npcChatText = Language.GetTextValue("Mods.AlchemistNPCReborn.TubePresentChat2");
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ShopChangeUIT.visible = true;
+            }
+        }
  
+        
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
-			if (Shop == 1)
-			{
-				shop.item[nextSlot].SetDefaults (ItemID.Aglet);
-				shop.item[nextSlot].shopCustomPrice = 20000;
-				nextSlot++;
-				if (NPC.downedQueenBee)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.AnkletoftheWind);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults (ItemID.ClimbingClaws);
-				shop.item[nextSlot].shopCustomPrice = 20000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults (ItemID.ShoeSpikes);
-				shop.item[nextSlot].shopCustomPrice = 30000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults (ItemID.HermesBoots);
-				shop.item[nextSlot].shopCustomPrice = 50000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults (ItemID.WaterWalkingBoots);
-				shop.item[nextSlot].shopCustomPrice = 50000;
-				nextSlot++;
-				if (NPC.downedQueenBee)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.FlowerBoots);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults (ItemID.IceSkates);
-				shop.item[nextSlot].shopCustomPrice = 50000;
-				nextSlot++;
-				if (NPC.downedBoss3)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.FlyingCarpet);
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-				if (NPC.downedGolemBoss)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.Tabi);
+            if (Shop == 1)
+            {
+                if (AlchemistNPCRebornWorld.foundAglet)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Aglet);
+                    shop.item[nextSlot].shopCustomPrice = 20000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundAnklet)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.AnkletoftheWind);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundClimbingClaws)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.ClimbingClaws);
+                    shop.item[nextSlot].shopCustomPrice = 20000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundShoeSpikes)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.ShoeSpikes);
+                    shop.item[nextSlot].shopCustomPrice = 30000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundHermesBoots)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.HermesBoots);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundWWB)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.WaterWalkingBoots);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFlowerBoots)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FlowerBoots);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundIceSkates)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.IceSkates);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFlyingCarpet)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FlyingCarpet);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundTabi)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Tabi);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFrogLeg)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FrogLeg);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundJFNeck)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.JellyfishNecklace);
+                    shop.item[nextSlot].shopCustomPrice = 30000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFlippers)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Flipper);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundDivingHelmet)
+                {
+                    shop.item[nextSlot].SetDefaults (ItemID.DivingHelmet);
+				    shop.item[nextSlot].shopCustomPrice = 250000;
+				    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundNeptuneShell)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.NeptunesShell);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundHorseshoe)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.LuckyHorseshoe);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundBalloon)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.ShinyRedBalloon);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundCloud)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.CloudinaBottle);
+                    shop.item[nextSlot].shopCustomPrice = 30000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundBlizzard)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.BlizzardinaBottle);
+                    shop.item[nextSlot].shopCustomPrice = 40000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundSandstorm)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.SandstorminaBottle);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundPuffer)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.BalloonPufferfish);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundTsunami)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.TsunamiInABottle);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundLavaCharm)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.LavaCharm);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundCMagnet)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.CelestialMagnet);
+                    shop.item[nextSlot].shopCustomPrice = 200000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundPMirror)
+                {
+                    shop.item[nextSlot].SetDefaults (ItemID.PocketMirror);
 					shop.item[nextSlot].shopCustomPrice = 250000;
 					nextSlot++;
-				}
-				if (NPC.downedBoss3)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.FrogLeg);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.JellyfishNecklace);
-					shop.item[nextSlot].shopCustomPrice = 30000;
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults (ItemID.Flipper);
-				shop.item[nextSlot].shopCustomPrice = 50000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults (ItemID.DivingHelmet);
-				shop.item[nextSlot].shopCustomPrice = 250000;
-				nextSlot++;
-				if (NPC.downedPlantBoss)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.NeptunesShell);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults (ItemID.LuckyHorseshoe);
-				shop.item[nextSlot].shopCustomPrice = 50000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults (ItemID.ShinyRedBalloon);
-				shop.item[nextSlot].shopCustomPrice = 50000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults (ItemID.CloudinaBottle);
-				shop.item[nextSlot].shopCustomPrice = 30000;
-				nextSlot++;
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.BlizzardinaBottle);
-					shop.item[nextSlot].shopCustomPrice = 40000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss3)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.SandstorminaBottle);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.BalloonPufferfish);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.TsunamiInABottle);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss3)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.LavaCharm);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (Main.hardMode)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.CelestialMagnet);
-					shop.item[nextSlot].shopCustomPrice = 200000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.PocketMirror);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-				}
-				if (NPC.downedMechBossAny)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.PhilosophersStone);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.HighTestFishingLine);
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.AnglerEarring);
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.TackleBox);
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-				}
-				if (NPC.downedMechBossAny)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.GoldRing);
-					shop.item[nextSlot].shopCustomPrice = 330000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.LuckyCoin);
-					shop.item[nextSlot].shopCustomPrice = 330000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.DiscountCard);
-					shop.item[nextSlot].shopCustomPrice = 330000;
-					nextSlot++;
-				}
-			}
-			if (Shop == 2)
-			{
-				shop.item[nextSlot].SetDefaults (ItemID.WhiteString);
-				shop.item[nextSlot].shopCustomPrice = 30000;
-				nextSlot++;
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.GreenCounterweight);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (Main.hardMode)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.YoYoGlove);
-					shop.item[nextSlot].shopCustomPrice = 500000;
-					nextSlot++;
-				}
-				if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.Blindfold);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.ArmorPolish);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.Vitamins);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.Bezoar);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.AdhesiveBandage);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.FastClock);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.TrifoldMap);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.Megaphone);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.Nazar);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.SorcererEmblem);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.WarriorEmblem);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.RangerEmblem);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.SummonerEmblem);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-				}
-				if (NPC.downedQueenBee)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.FeralClaws);
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-				if (Main.hardMode)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.TitanGlove);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.MagmaStone);
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.SharkToothNecklace);
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-				}
-				if (NPC.downedGolemBoss)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.BlackBelt);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-				}
-				if (NPC.downedMechBossAny)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.MoonCharm);
-					shop.item[nextSlot].shopCustomPrice = 300000;
-					nextSlot++;
-				}
-				if (NPC.downedGolemBoss)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.SunStone);
-					shop.item[nextSlot].shopCustomPrice = 350000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.MoonStone);
-					shop.item[nextSlot].shopCustomPrice = 350000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.RifleScope);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-				}
-				if (Main.hardMode)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.CobaltShield);
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-				}
-				if (NPC.downedGolemBoss)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.PaladinsShield);
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-				if (NPC.downedMechBossAny)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.FrozenTurtleShell);
-					shop.item[nextSlot].shopCustomPrice = 350000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.PutridScent);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.FleshKnuckles);
-					shop.item[nextSlot].shopCustomPrice = 250000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.MagicQuiver);
-					shop.item[nextSlot].shopCustomPrice = 200000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss2)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.PanicNecklace);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
-				}
-				if (NPC.downedMechBossAny)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.CrossNecklace);
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.StarCloak);
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss3)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.ObsidianRose);
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-					shop.item[nextSlot].SetDefaults (ItemID.Shackle);
-					shop.item[nextSlot].shopCustomPrice = 30000;
-					nextSlot++;
-				if (NPC.downedGolemBoss)
-				{
-					shop.item[nextSlot].SetDefaults (ItemID.HerculesBeetle);
-					shop.item[nextSlot].shopCustomPrice = 330000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.PygmyNecklace);
-					shop.item[nextSlot].shopCustomPrice = 330000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults (ItemID.NecromanticScroll);
-					shop.item[nextSlot].shopCustomPrice = 330000;
-					nextSlot++;
-				}
-			}
-		}
+                }
+                if (AlchemistNPCRebornWorld.foundPStone)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.PhilosophersStone);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundHTFL)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundAnglerEarring)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.AnglerEarring);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundTackleBox)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.TackleBox);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundGoldRing)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.GoldRing);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundLuckyCoin)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.LuckyCoin);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundDiscountCard)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.DiscountCard);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                }
+            }
+            if (Shop == 2)
+            {
+                if (AlchemistNPCRebornWorld.foundString)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.WhiteString);
+                    shop.item[nextSlot].shopCustomPrice = 30000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundGreenCW)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.GreenCounterweight);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundYoyoGlove)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.YoYoGlove);
+                    shop.item[nextSlot].shopCustomPrice = 500000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundBlindfold)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Blindfold);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundArmorPolish)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.ArmorPolish);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundVitamins)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Vitamins);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundBezoar)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Bezoar);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundAdhesiveBandage)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.AdhesiveBandage);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFastClock)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FastClock);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundTrifoldMap)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.TrifoldMap);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundMegaphone)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Megaphone);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundNazar)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Nazar);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundSorcE)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.SorcererEmblem);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundWE)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.WarriorEmblem);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundRE)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.RangerEmblem);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundSumE)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.SummonerEmblem);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFeralClaw)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FeralClaws);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundTitanGlove)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.TitanGlove);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundMagmaStone)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.MagmaStone);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundSharkTooth)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.SharkToothNecklace);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundBlackBelt)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.BlackBelt);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundMoonCharm)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.MoonCharm);
+                    shop.item[nextSlot].shopCustomPrice = 300000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundSunStone)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.SunStone);
+                    shop.item[nextSlot].shopCustomPrice = 350000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundMoonStone)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.MoonStone);
+                    shop.item[nextSlot].shopCustomPrice = 350000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundRifleScope)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.RifleScope);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundCobaltShield)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.CobaltShield);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundPaladinShield)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.PaladinsShield);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFrozenTurtleShell)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FrozenTurtleShell);
+                    shop.item[nextSlot].shopCustomPrice = 350000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundPutridScent)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.PutridScent);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundFleshKnuckles)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.FleshKnuckles);
+                    shop.item[nextSlot].shopCustomPrice = 250000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundMagicQuiver)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.MagicQuiver);
+                    shop.item[nextSlot].shopCustomPrice = 200000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundPanicNecklace)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.PanicNecklace);
+                    shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundCrossNecklace)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.CrossNecklace);
+                    shop.item[nextSlot].shopCustomPrice = 100000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundStarCloak)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.StarCloak);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundObsidianRose)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.ObsidianRose);
+                    shop.item[nextSlot].shopCustomPrice = 150000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundShackle)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.Shackle);
+                    shop.item[nextSlot].shopCustomPrice = 30000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundHerculesBeetle)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.HerculesBeetle);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundPygmyNecklace)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.PygmyNecklace);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                }
+                if (AlchemistNPCRebornWorld.foundNecromanticScroll)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.NecromanticScroll);
+                    shop.item[nextSlot].shopCustomPrice = 330000;
+                    nextSlot++;
+                }
+            }
+            if (Shop == 3)
+            {
+                if (Main.hardMode)
+                {
+                    shop.item[nextSlot].SetDefaults(Mod.Find<ModItem>("MenacingToken").Type);
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(Mod.Find<ModItem>("LuckyToken").Type);
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(Mod.Find<ModItem>("ViolentToken").Type);
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(Mod.Find<ModItem>("WardingToken").Type);
+                    nextSlot++;
+                }
+            }
+        }
+			
 	}
 }

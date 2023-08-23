@@ -37,12 +37,6 @@ namespace AlchemistNPCReborn.NPCs
                 return "AlchemistNPCReborn/NPCs/Jeweler";
             }
         }
-        // Probably Removed
-        // public override bool Autoload(ref string name)
-        // {
-        // 	name = "Jeweler";
-        // 	return true;
-        // }
 
         public override void SetStaticDefaults()
         {

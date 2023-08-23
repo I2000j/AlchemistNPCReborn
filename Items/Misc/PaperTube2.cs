@@ -65,7 +65,9 @@ namespace AlchemistNPCReborn.Items.Misc
 		public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
 			var randomAcc = new List<string>();
-								
+
+			if (!AlchemistNPCRebornWorld.foundPMirror) {
+			randomAcc.Add("foundPMirror");}	
 			if (!AlchemistNPCRebornWorld.foundPStone) {
 			randomAcc.Add("foundPStone");}
 			if (!AlchemistNPCRebornWorld.foundGoldRing) {
@@ -145,6 +147,8 @@ namespace AlchemistNPCReborn.Items.Misc
 			
 			Main.NewText(Language.GetTextValue("Mods.AlchemistNPCReborn.PaperTubeT2Info3"), 255, 255, 255);
 			
+			if (randomAcc[acc] == "foundPMirror") {
+			AlchemistNPCRebornWorld.foundPMirror = true;}
 			if (randomAcc[acc] == "foundPStone") {
 			AlchemistNPCRebornWorld.foundPStone = true;}
 			if (randomAcc[acc] == "foundGoldRing") {

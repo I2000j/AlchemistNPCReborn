@@ -66,7 +66,6 @@ namespace AlchemistNPCReborn.NPCs
 			NPC.noGravity = true;
 			AIType = 9;
 			Music = MusicID.Boss2;
-			//bossBag = mod.ItemType("BillCipherBag");
 
 			ModTranslation text = LocalizationLoader.CreateTranslation(Mod, "BillCipherChat1");
             text.SetDefault("What? Are you my namesake? Well, I don't want to fight you.");

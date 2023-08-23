@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
@@ -24,13 +24,6 @@ namespace AlchemistNPCReborn.NPCs
                 return "AlchemistNPCReborn/NPCs/YoungBrewer";
             }
         }
-
-        //Possibly removed
-        // public override bool Autoload(ref string name)
-        // {
-        // 	name = "Young Brewer";
-        // 	return true;
-        // }
 
         public override void SetStaticDefaults()
         {
@@ -122,6 +115,11 @@ namespace AlchemistNPCReborn.NPCs
             text.SetDefault("Certain combinations can only be brewed if certain types of magic are present in the world.");
             text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Некоторые комбинации могут быть изготовлены только если в мире присутсвуют особенные виды магии.");
             LocalizationLoader.AddTranslation(text);
+            text = LocalizationLoader.CreateTranslation("Entry11");
+            text.SetDefault("You might be wondering how do i put actual rainbows in a flask... Well, with the power of maaagic...... and eternal sufferings.");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Russian), "Тебе наверное любопытно, как я поместил настоящую радугу во флакон... Ну, силами магии... и вечными страданиями.");
+            text.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "你可能想知道我怎么把真正的彩虹放在瓶子里…好吧，有了巨大大大大魔法的力量……以及永恒的痛苦。");
+	        LocalizationLoader.AddTranslation(text);
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
             {
                 Velocity = -1f,
@@ -224,8 +222,15 @@ namespace AlchemistNPCReborn.NPCs
 
         public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
         {
-            projType = ProjectileID.ToxicFlask;
-            attackDelay = 5;
+            if (NPC.downedMoonlord)
+			{
+			projType = Mod.Find<ModProjectile>("CorrosiveFlask").Type;
+			}
+			else
+			{
+			projType = ProjectileID.ToxicFlask;
+			}
+			attackDelay = 1;
         }
 
         public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
@@ -247,11 +252,16 @@ namespace AlchemistNPCReborn.NPCs
             string Entry8 = Language.GetTextValue("Mods.AlchemistNPCReborn.Entry8");
             string Entry9 = Language.GetTextValue("Mods.AlchemistNPCReborn.Entry9");
             string Entry10 = Language.GetTextValue("Mods.AlchemistNPCReborn.Entry10");
+            string Entry11 = Language.GetTextValue("Mods.AlchemistNPCReborn.Entry11");
             int Brewer = NPC.FindFirstNPC(ModContent.NPCType<Brewer>());
             if (Brewer >= 0 && Main.rand.Next(4) == 0)
             {
                 return Entry8 + Main.npc[Brewer].GivenName + Entry9;
             }
+            if (NPC.downedMoonlord && Main.rand.NextBool(10))
+			{
+				return Entry8 + Main.npc[Brewer].GivenName + Entry9;
+			}
             switch (Main.rand.Next(8))
             {
                 case 0:
@@ -443,6 +453,30 @@ namespace AlchemistNPCReborn.NPCs
                     shop.item[nextSlot].shopCustomPrice = 30000;
                     nextSlot++;
                 }
+                bool WA = false;
+				for (int k = 0; k < 255; k++)
+				{
+					Player player = Main.player[k];
+					if (player.active)
+					{
+						for (int j = 0; j < player.inventory.Length; j++)
+						{
+							if (player.inventory[j].type == Mod.Find<ModItem>("WatcherAmulet").Type)
+							{
+							shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPC").Find<ModItem>("RainbowFlask").Type);
+							shop.item[nextSlot].shopCustomPrice = 1000000;
+							nextSlot++;
+							WA = true;
+							}
+							if (player.inventory[j].type == Mod.Find<ModItem>("Autoinjector").Type && !WA)
+							{
+							shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPC").Find<ModItem>("RainbowFlask").Type);
+							shop.item[nextSlot].shopCustomPrice = 1000000;
+							nextSlot++;
+							}
+						}
+					}
+				}
 				// IMPLEMENT WHEN WEAKREFERENCES FIXED
 				/*
                 if (ModLoader.GetMod("AAMod") != null)

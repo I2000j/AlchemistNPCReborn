@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -400,11 +400,11 @@ namespace AlchemistNPCReborn.NPCs
                 return EntryA15 + Main.npc[Brewer].GivenName + EntryA16;
             }
 			
-			/*ModLoader.TryGetMod("ThoriumMod", out Mod ThoriumMod);
+			ModLoader.TryGetMod("ThoriumMod", out Mod ThoriumMod);
 			
             if (ThoriumMod != null)
             {
-                int DA = NPC.FindFirstNPC(ModLoader.GetMod("ThoriumMod").NPCType("DesertTraveler"));
+                int DA = NPC.FindFirstNPC(ModLoader.GetMod("ThoriumMod").Find<ModNPC>("DesertTraveler").Type);
                 if (DA >= 0 && Main.rand.Next(7) == 0)
                 {
                     return EntryA9 + Main.npc[DA].GivenName + EntryA10;
@@ -412,7 +412,7 @@ namespace AlchemistNPCReborn.NPCs
             }
             if (ThoriumMod != null)
             {
-                int DA = NPC.FindFirstNPC(ModLoader.GetMod("ThoriumMod").NPCType("DesertTraveler"));
+                int DA = NPC.FindFirstNPC(ModLoader.GetMod("ThoriumMod").Find<ModNPC>("DesertTraveler").Type);
                 if (DA >= 0 && Brewer >= 0 && Main.rand.Next(8) == 0)
                 {
                     return EntryA11;
@@ -421,7 +421,8 @@ namespace AlchemistNPCReborn.NPCs
             if (ThoriumMod != null && Main.rand.Next(5) == 0)
             {
                 return EntryA8;
-            }*/
+            }
+
             switch (Main.rand.Next(7))
             {
                 case 0:
@@ -456,22 +457,25 @@ namespace AlchemistNPCReborn.NPCs
 			{
 				for (int j = 0; j < player.inventory.Length; j++)
 				{
-					//LifeElixir not added
-					//if (player.inventory[j].type == mod.ItemType("LifeElixir"))
-					//{
-					//	LE = true;
-					//}
+					if (player.inventory[j].type == Mod.Find<ModItem>("LifeElixir").Type)
+					{
+						LE = true;
+					}
 					if (player.inventory[j].type == ItemID.PhilosophersStone)
 					{
 						PS = true;
 					}
-					//AlchemicalBundle not added
-					//if (player.inventory[j].type == mod.ItemType("AlchemicalBundle"))
-					//{
-					//	AB = true;
-					//}
+					if (player.inventory[j].type == Mod.Find<ModItem>("AlchemicalBundle").Type)
+					{
+						AB = true;
+					}
 				}
 			}
+
+            if (PS && AB)
+            {
+                button2 = Language.GetTextValue("Mods.AlchemistNPCReborn.BrewElixir");
+            }
 			
 			int Alchemist = NPC.FindFirstNPC(ModContent.NPCType<Alchemist>());
 			if (player.name == "Gregg" && Main.npc[Alchemist].GivenName == Gregg && NPC.downedMoonlord && !Tantrum)
@@ -496,14 +500,37 @@ namespace AlchemistNPCReborn.NPCs
             else
             {
                 Player player = Main.player[Main.myPlayer];
+                var source = NPC.GetSource_FromAI();
                 if ((player.GetModPlayer<AlchemistNPCRebornPlayer>()).AlchemistCharmTier1 == false && (player.GetModPlayer<AlchemistNPCRebornPlayer>()).AlchemistCharmTier2 == false && (player.GetModPlayer<AlchemistNPCRebornPlayer>()).AlchemistCharmTier3 == false && (player.GetModPlayer<AlchemistNPCRebornPlayer>()).AlchemistCharmTier4 == false)
                 {
-                    var source = NPC.GetSource_FromAI();
                     player.QuickSpawnItem(source, ModContent.ItemType<Items.Misc.AlchemistCharmTier1>());
                 }
-                baseShop = false;
-                plantShop = true;
-                shop = true;
+				if (!PS || !AB)
+				{
+				baseShop = false;
+				plantShop = true;
+				shop = true;
+				}
+				if (PS && AB)
+				{
+					if (Main.player[Main.myPlayer].HasItem(ItemID.PhilosophersStone))
+					{
+						Item[] inventory = Main.player[Main.myPlayer].inventory;
+						for (int k = 0; k < inventory.Length; k++)
+						{
+							if (inventory[k].type == Mod.Find<ModItem>("AlchemicalBundle").Type)
+							{
+								inventory[k].stack--;
+							}
+						}
+					}
+					player.QuickSpawnItem(source, Mod.Find<ModItem>("LifeElixir").Type);
+				}
+				if (player.name == "Gregg" && NPC.downedMoonlord)
+				{
+				Tantrum = true;
+				player.QuickSpawnItem(source, Mod.Find<ModItem>("LastTantrum").Type);
+				}
             }
         }
 
@@ -600,16 +627,6 @@ namespace AlchemistNPCReborn.NPCs
                     shop.item[nextSlot].shopCustomPrice = 7500;
                     nextSlot++;
                 }
-				// IMPLEMENT WHEN WEAKREFERENCES FIXED
-				/*
-                if (ModLoader.GetMod("imkSushisMod") != null)
-                {
-                	addModItemToShop(imkSushisMod, "BaseSummoningPotion", 2500, ref shop, ref nextSlot);
-                	addModItemToShop(imkSushisMod, "AnglerAmnesiaPotion", 10000, ref shop, ref nextSlot);
-                	addModItemToShop(imkSushisMod, "MeteoritePotion", 50000, ref shop, ref nextSlot);
-                	addModItemToShop(imkSushisMod, "ResurrectionPotion", 25000, ref shop, ref nextSlot);
-                }
-				*/
                 if (NPC.downedBoss2)
                 {
                     shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.BeachTeleporterPotion>());
@@ -632,6 +649,9 @@ namespace AlchemistNPCReborn.NPCs
                 {
                     shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.UnderworldTeleportationPotion>());
                     shop.item[nextSlot].shopCustomPrice = 50000;
+                    nextSlot++;
+                    shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.BeaconTeleportator>());
+                    shop.item[nextSlot].shopCustomPrice = 25000;
                     nextSlot++;
                 }
                 if (NPC.downedPlantBoss)
@@ -692,6 +712,30 @@ namespace AlchemistNPCReborn.NPCs
                     shop.item[nextSlot].shopCustomPrice = 7500;
                     nextSlot++;
                 }
+                bool OA = false;
+			    for (int k = 0; k < 255; k++)
+			    {
+			    	Player player = Main.player[k];
+			    	if (player.active)
+			    	{
+			    		for (int j = 0; j < player.inventory.Length; j++)
+			    		{
+			    			if (player.inventory[j].type == Mod.Find<ModItem>("OtherworldlyAmulet").Type)
+			    			{
+			    			shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPC").Find<ModItem>("EmagledFragmentation").Type);
+			    			shop.item[nextSlot].shopCustomPrice = 100000;
+			    			nextSlot++;
+			    			OA = true;
+			    			}
+			    			if (player.inventory[j].type == Mod.Find<ModItem>("Autoinjector").Type && !OA)
+			    			{
+			    			shop.item[nextSlot].SetDefaults (ModLoader.GetMod("AlchemistNPC").Find<ModItem>("EmagledFragmentation").Type);
+			    			shop.item[nextSlot].shopCustomPrice = 100000;
+			    			nextSlot++;
+			    			}
+			    		}
+			    	}
+			    }
             }
             if (plantShop)
             {

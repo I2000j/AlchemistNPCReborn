@@ -94,6 +94,8 @@ namespace AlchemistNPCReborn.Items.Misc
 			randomAcc.Add("foundIceSkates");}
 			if (!AlchemistNPCRebornWorld.foundFlyingCarpet) {
 			randomAcc.Add("foundFlyingCarpet");}
+			if (!AlchemistNPCRebornWorld.foundDivingHelmet) {
+			randomAcc.Add("foundDivingHelmet");}
 			if (!AlchemistNPCRebornWorld.foundLavaCharm) {
 			randomAcc.Add("foundLavaCharm");}
 			if (!AlchemistNPCRebornWorld.foundHorseshoe) {
@@ -168,6 +170,8 @@ namespace AlchemistNPCReborn.Items.Misc
 			AlchemistNPCRebornWorld.foundIceSkates = true;}
 			if (randomAcc[acc] == "foundFlyingCarpet") {
 			AlchemistNPCRebornWorld.foundFlyingCarpet = true;}
+			if (randomAcc[acc] == "foundDivingHelmet") {
+			AlchemistNPCRebornWorld.foundDivingHelmet = true;}
 			if (randomAcc[acc] == "foundLavaCharm") {
 			AlchemistNPCRebornWorld.foundLavaCharm = true;}
 			if (randomAcc[acc] == "foundHorseshoe") {

@@ -397,6 +397,7 @@ namespace AlchemistNPCReborn
                     ShopChangeUIA.visible = false;
                     ShopChangeUIO.visible = false;
                     ShopChangeUIM.visible = false;
+                    ShopChangeUIT.visible = false;
                 }
             }
             if (Player.talkNPC == -1)
@@ -661,6 +662,11 @@ namespace AlchemistNPCReborn
             snatcherC.Add(SnatcherCounter.ToString());
 
             tag["snatcherC"] = (object) snatcherC;
+
+            List<string> lifeC = new List<string>();
+            lifeC.Add(LifeElixir.ToString());
+
+            tag["lifeC"] = (object) lifeC;
             
         }
 
@@ -752,6 +758,15 @@ namespace AlchemistNPCReborn
                 if(snatcherC.Contains(i.ToString()))
                 {
                     SnatcherCounter = i;
+                }
+            }
+
+            IList<string> lifeC = tag.GetList<string>("lifeC");
+            for (int i = 0; i < 3; i++)
+            {
+                if(lifeC.Contains(i.ToString()))
+                {
+                    LifeElixir = i;
                 }
             }
         }
